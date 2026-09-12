@@ -13,13 +13,14 @@ var SHEET_NAME = 'RSVPs'
 
 function doGet(e) {
   try {
-    var action = (e && e.parameter && e.parameter.action) || 'ping'
-    if (action === 'list') {
-      return json_({ ok: true, rows: listRows_() })
+    // Default to list so Google’s redirect can’t drop ?action=list
+    var action = (e && e.parameter && e.parameter.action) || 'list'
+    if (action === 'ping') {
+      return ContentService.createTextOutput('RSVP endpoint is live').setMimeType(
+        ContentService.MimeType.TEXT,
+      )
     }
-    return ContentService.createTextOutput('RSVP endpoint is live').setMimeType(
-      ContentService.MimeType.TEXT,
-    )
+    return json_({ ok: true, rows: listRows_() })
   } catch (err) {
     return json_({ ok: false, error: String(err) })
   }
