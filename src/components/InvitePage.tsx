@@ -92,13 +92,13 @@ function Countdown({ dateISO }: { dateISO: string }) {
                 }}
               >
                 <span
-                  className={`leading-none font-light text-black ${
-                    isRtl ? 'font-formal text-[28px]' : 'font-headline text-[30px]'
-                  }`}
+                  className="countdown-num font-headline text-[30px] leading-none font-light text-black"
                   style={{
                     fontFeatureSettings: 'normal',
                     fontVariationSettings: 'normal',
+                    fontVariantNumeric: 'tabular-nums',
                   }}
+                  lang="en"
                   dir="ltr"
                 >
                   {String(c.value).padStart(2, '0')}
@@ -881,7 +881,7 @@ export function InvitePage({ invite }: Props) {
           <div className="relative mx-auto w-full max-w-md space-y-6 overflow-visible rounded-xl border border-[#e2dacf] bg-[#f8f5f2] p-5 sm:p-8">
             {/* Demo florals: top-right + bottom-left */}
             <img
-              src="/media/rsvp-floral-corner.jpg"
+              src="/media/rsvp-floral-corner.webp"
               alt=""
               aria-hidden
               className="pointer-events-none absolute -top-10 -right-6 z-[1] w-40 select-none"
@@ -889,7 +889,7 @@ export function InvitePage({ invite }: Props) {
               decoding="async"
             />
             <img
-              src="/media/rsvp-floral-corner.jpg"
+              src="/media/rsvp-floral-corner.webp"
               alt=""
               aria-hidden
               className="pointer-events-none absolute -bottom-10 -left-6 z-[1] w-40 select-none"

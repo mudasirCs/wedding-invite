@@ -80,6 +80,14 @@ html[lang='ps'] .font-countdown {
   line-height: 1.85;
 }
 
+/* Countdown digits: same Pinyon Script as English (ignore Pashto headline override) */
+html[lang='ps'] .countdown-num {
+  font-family: 'Pinyon Script', cursive !important;
+  line-height: 1 !important;
+  letter-spacing: normal !important;
+  font-feature-settings: normal !important;
+}
+
 html[lang='ps'] h1,
 html[lang='ps'] h2,
 html[lang='ps'] h3 {

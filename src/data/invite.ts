@@ -91,7 +91,7 @@ export const invite: InviteConfig = {
     address: "1050 King Georges Post Rd, Fords, NJ 08863",
     mapsUrl:
       'https://www.google.com/maps?gs_lcrp=EgZjaHJvbWUqBggAEEUYOzIGCAAQRRg70gEIMTM3MGowajeoAgCwAgA&um=1&ie=UTF-8&fb=1&gl=pk&sa=X&geocode=KbOaT7f8tcOJMWZk9q9bpI_e&daddr=1050+King+Georges+Post+Rd,+Fords,+NJ+08863,+United+States',
-    imageUrl: '/media/venues/royal-alberts-palace.jpg',
+    imageUrl: '/media/venues/royal-alberts-palace.webp',
   },
   schedule: {
     heading: 'What have planned for you',
