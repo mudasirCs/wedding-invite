@@ -68,8 +68,8 @@ export type InviteConfig = {
 /** Real couple details — Abdul Rafi & Abida */
 export const invite: InviteConfig = {
   envelopeMessage: 'For Abdul Rafi and Abida',
-  partnerOne: 'abdul rafi',
-  partnerTwo: 'abida',
+  partnerOne: 'Abdul Rafi',
+  partnerTwo: 'Abida',
   subtitle: 'He asked, she said yes',
   dateLabel: '27 NOVEMBER 2026',
   dateISO: '2026-11-27T14:00:00',
@@ -83,7 +83,7 @@ export const invite: InviteConfig = {
     heroImage: '/media/hero-balcony.jpg?v=3',
     themeVideo: '/media/theme.mp4',
     themePoster: '/media/theme-poster.jpg',
-    music: '/audio/romantic-piano.mp3',
+    music: '/audio/background.mp3',
   },
   venue: {
     title: 'The Venue',

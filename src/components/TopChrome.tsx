@@ -11,7 +11,7 @@ export function TopChrome({ musicOn, onToggle, showMusic = true }: Props) {
 
   return (
     <>
-      <div className="fixed top-4 z-[60] end-4 lg:end-[calc(50%-195px+1rem)]">
+      <div className="fixed top-[max(1rem,env(safe-area-inset-top))] z-[60] end-[max(1rem,env(safe-area-inset-right))] lg:end-[calc(50%-195px+1rem)]">
         <button
           type="button"
           onClick={toggleLang}
@@ -31,7 +31,7 @@ export function TopChrome({ musicOn, onToggle, showMusic = true }: Props) {
           onClick={onToggle}
           aria-label={musicOn ? t.muteMusic : t.playMusic}
           aria-pressed={musicOn}
-          className="fixed end-4 bottom-5 z-[60] flex h-12 w-12 items-center justify-center rounded-full bg-[#3a3a3a] text-white shadow-lg lg:end-[calc(50%-195px+1rem)]"
+          className="fixed end-[max(1rem,env(safe-area-inset-right))] bottom-[max(1.25rem,env(safe-area-inset-bottom))] z-[60] flex h-12 w-12 items-center justify-center rounded-full bg-[#3a3a3a] text-white shadow-lg lg:end-[calc(50%-195px+1rem)]"
         >
           {musicOn ? <SpeakerIcon /> : <SpeakerOffIcon />}
         </button>

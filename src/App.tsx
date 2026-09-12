@@ -41,7 +41,10 @@ export default function App() {
 
   return (
     <div className="notranslate flex min-h-[100dvh] justify-center overflow-x-hidden bg-[#f5f0e6]">
-      <div data-invitation-phone-frame="true" className="phone-frame">
+      <div
+        data-invitation-phone-frame="true"
+        className="phone-frame relative w-full overflow-x-clip md:shadow-2xl lg:max-w-[390px]"
+      >
         <TopChrome
           musicOn={musicOn}
           onToggle={() => setMusicOn((v) => !v)}

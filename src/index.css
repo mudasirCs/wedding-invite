@@ -14,6 +14,7 @@
   --font-script: 'Great Vibes', cursive;
   --font-formal: 'Petit Formal Script', cursive;
   --font-ui: 'Raleway', system-ui, sans-serif;
+  --font-countdown: 'Bodoni Moda', 'Playfair Display', Georgia, serif;
 }
 
 *,
@@ -27,6 +28,7 @@ body,
 #root {
   min-height: 100%;
   min-height: 100dvh;
+  width: 100%;
 }
 
 body {
@@ -51,33 +53,86 @@ html[lang='ps'] {
   --font-script: 'Noto Nastaliq Urdu', 'Noto Naskh Arabic', serif;
   --font-formal: 'Noto Naskh Arabic', 'Noto Sans Arabic', serif;
   --font-ui: 'Noto Sans Arabic', 'Noto Naskh Arabic', system-ui, sans-serif;
+  --font-countdown: 'Noto Naskh Arabic', 'Noto Sans Arabic', serif;
 }
 
 html[lang='ps'] body {
-  line-height: 1.85;
+  line-height: 1.95;
   letter-spacing: 0;
-  word-spacing: 0.02em;
+  word-spacing: 0.01em;
   text-rendering: optimizeLegibility;
+  font-size: 17px;
 }
 
 html[lang='ps'] .font-headline,
-html[lang='ps'] .font-script {
-  line-height: 1.85;
+html[lang='ps'] .font-script,
+html[lang='ps'] .font-display {
+  line-height: 2.05;
+  letter-spacing: 0 !important;
   font-feature-settings: 'kern' 1;
 }
 
-html[lang='ps'] .font-ui {
-  letter-spacing: 0;
-  text-transform: none;
-  line-height: 1.7;
+html[lang='ps'] .font-formal,
+html[lang='ps'] .font-ui,
+html[lang='ps'] .font-countdown {
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  line-height: 1.85;
 }
 
-/* Nastaliq needs extra vertical room in tight headings */
 html[lang='ps'] h1,
 html[lang='ps'] h2,
 html[lang='ps'] h3 {
-  line-height: 1.9;
+  line-height: 2.1;
 }
+
+/* Section titles sized for Latin scripts — scale for Nastaliq/Naskh */
+html[lang='ps'] .invite-title {
+  font-size: 2.15rem !important;
+  line-height: 2.2 !important;
+  padding-block: 0.2em;
+}
+
+html[lang='ps'] .invite-title-sm {
+  font-size: 1.9rem !important;
+  line-height: 2.15 !important;
+  padding-block: 0.15em;
+}
+
+html[lang='ps'] .invite-subtitle {
+  font-size: 1.45rem !important;
+  line-height: 2 !important;
+}
+
+html[lang='ps'] .invite-body {
+  font-size: 1.05rem !important;
+  line-height: 2.05 !important;
+}
+
+html[lang='ps'] .invite-caption {
+  font-size: 0.9375rem !important;
+  line-height: 1.95 !important;
+}
+
+html[lang='ps'] .uppercase,
+html[lang='ps'] .capitalize {
+  text-transform: none !important;
+}
+
+html[lang='ps'] [class*='tracking-'] {
+  letter-spacing: 0 !important;
+}
+
+/* Extra air between stacked Pashto blocks */
+html[lang='ps'] .invite-stack > * + * {
+  margin-top: 0.35em;
+}
+
+html[lang='ps'] .invite-section {
+  padding-top: 3.25rem;
+  padding-bottom: 3.25rem;
+}
+
 
 .font-display {
   font-family: var(--font-display);
@@ -94,20 +149,30 @@ html[lang='ps'] h3 {
 .font-ui {
   font-family: var(--font-ui);
 }
+.font-countdown {
+  font-family: var(--font-countdown);
+}
 
+/* Demo shell: full-bleed on phone/tablet, phone column only at lg+ */
 .phone-frame {
   width: 100%;
-  max-width: 390px;
+  max-width: none;
   margin: 0 auto;
   min-height: 100dvh;
   background: var(--color-cream);
   position: relative;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 @media (min-width: 768px) {
   .phone-frame {
     box-shadow: 0 25px 80px rgba(80, 60, 40, 0.18);
+  }
+}
+
+@media (min-width: 1024px) {
+  .phone-frame {
+    max-width: 390px;
   }
 }
 

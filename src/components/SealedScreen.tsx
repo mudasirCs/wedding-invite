@@ -79,10 +79,11 @@ export function SealedScreen({ videoSrc, poster, playing, onTap, onPlayEnd }: Pr
             className="absolute inset-x-6 text-center font-script"
             style={{
               top: '54%',
-              fontSize: isRtl ? 24 : 28,
+              fontSize: isRtl ? 26 : 28,
               color: '#6b1f2a',
               textShadow: '0 1px 0 rgba(255,255,255,0.35)',
-              lineHeight: isRtl ? 1.8 : 1.25,
+              lineHeight: isRtl ? 2 : 1.25,
+              paddingInline: isRtl ? 4 : 0,
             }}
           >
             {t.envelopeMessage}
@@ -91,9 +92,9 @@ export function SealedScreen({ videoSrc, poster, playing, onTap, onPlayEnd }: Pr
             className="absolute inset-x-0 text-center font-script"
             style={{
               bottom: '4.5%',
-              fontSize: isRtl ? 15 : 16,
+              fontSize: isRtl ? 16 : 16,
               color: '#6b1f2a',
-              lineHeight: isRtl ? 1.7 : 1.25,
+              lineHeight: isRtl ? 1.85 : 1.25,
             }}
           >
             {t.tapToOpen}

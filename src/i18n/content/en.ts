@@ -2,13 +2,13 @@ import type { InviteCopy } from '../types'
 
 export const en: InviteCopy = {
   envelopeMessage: 'For Abdul Rafi and Abida',
-  partnerOne: 'abdul rafi',
-  partnerTwo: 'abida',
+  partnerOne: 'Abdul Rafi',
+  partnerTwo: 'Abida',
   and: '&',
   subtitle: 'He asked, she said yes',
   dateLabel: '27 NOVEMBER 2026',
   countdownTitle: 'Countdown',
-  countdownMessage: "We can't wait for  this moment!",
+  countdownMessage: "We can't wait for this moment!",
   countdownDone: 'The day is here',
   days: 'Days',
   hours: 'Hours',
