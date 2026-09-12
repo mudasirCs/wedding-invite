@@ -455,72 +455,107 @@ export function InvitePage({ invite }: Props) {
           </div>
         </section>
 
-        {/* RSVP */}
-        <section id="rsvp" className="px-6 pb-28 pt-10">
-          <img
-            src="/media/floral-border-top.png"
-            alt=""
-            className="mx-auto mb-3 w-52 object-contain"
-          />
-          <div className="rounded-3xl border border-white/50 bg-white/75 p-6 shadow-[0_16px_50px_rgba(80,40,80,0.12)] backdrop-blur-md">
-            <h2 className="font-script text-center text-[2.8rem] text-wine">
-              {invite.rsvp.heading}
-            </h2>
-            <p className="mt-1 text-center font-display italic text-ink/70">
-              {invite.rsvp.subheading}
-            </p>
-            <p className="mt-1 text-center font-formal text-xs text-ink/50">
-              {invite.rsvp.replyBy}
-            </p>
+        {/* RSVP — fonts/colors from demo rsvp_config */}
+        <section id="rsvp" className="relative px-5 pb-28 pt-6">
+          <div className="relative overflow-hidden rounded-[1.75rem] border border-white/60 bg-[#fffcf7]/92 px-5 pb-8 pt-7 shadow-[0_18px_50px_rgba(80,40,80,0.10)] backdrop-blur-md">
+            <img
+              src="/media/rsvp-floral-corner.png"
+              alt=""
+              aria-hidden
+              className="pointer-events-none absolute -top-2 -left-2 w-[7.5rem] rotate-180 opacity-90"
+            />
+            <img
+              src="/media/rsvp-floral-corner.png"
+              alt=""
+              aria-hidden
+              className="pointer-events-none absolute -right-2 -bottom-2 w-[7.5rem] opacity-90"
+            />
+
+            <div className="relative z-10 text-center">
+              <h2
+                className="font-headline text-center leading-none"
+                style={{ fontSize: 42, color: '#722f37', fontWeight: 400 }}
+              >
+                {invite.rsvp.heading}
+              </h2>
+              <p
+                className="mt-2 text-center"
+                style={{ fontSize: 12, color: '#000000', fontFamily: 'Raleway, system-ui, sans-serif' }}
+              >
+                {invite.rsvp.subheading}
+              </p>
+              <p
+                className="font-script mt-1.5 text-center leading-none"
+                style={{ fontSize: 18, color: '#442727' }}
+              >
+                {invite.rsvp.replyBy}
+              </p>
+            </div>
 
             {rsvpStatus === 'sent' ? (
-              <p className="mt-8 text-center font-display text-base text-wine">
+              <p
+                className="relative z-10 mt-8 text-center font-display"
+                style={{ color: '#722f37', fontSize: 16 }}
+              >
                 Thank you — your RSVP was received.
               </p>
             ) : (
-              <form className="mt-6 space-y-4 text-left" onSubmit={submitRsvp}>
-                <label className="block text-sm">
-                  Full name *
+              <form
+                className="relative z-10 mx-auto mt-7 w-full max-w-[300px] space-y-5 text-left"
+                onSubmit={submitRsvp}
+              >
+                <label className="font-formal block text-[15px] leading-snug text-ink">
+                  <span className="block text-center">Full name *</span>
                   <input
                     name="name"
                     required
                     autoComplete="name"
-                    className="mt-1 w-full rounded-xl border border-black/10 bg-white px-3 py-2"
+                    className="font-ui mt-2 w-full rounded-lg border border-[#d9d0c6] bg-white px-3 py-2.5 text-center text-[14px] text-ink outline-none focus:border-[#722f37]/40"
                   />
                 </label>
-                <label className="block text-sm">
-                  Email
+                <label className="font-formal block text-[15px] leading-snug text-ink">
+                  <span className="block text-center">Email</span>
                   <input
                     name="email"
                     type="email"
                     autoComplete="email"
-                    className="mt-1 w-full rounded-xl border border-black/10 bg-white px-3 py-2"
+                    className="font-ui mt-2 w-full rounded-lg border border-[#d9d0c6] bg-white px-3 py-2.5 text-center text-[14px] text-ink outline-none focus:border-[#722f37]/40"
                   />
                 </label>
-                <fieldset className="text-sm">
-                  <legend>Will you attend? *</legend>
-                  <label className="mt-2 flex items-center gap-2">
-                    <input type="radio" name="attend" value="yes" required defaultChecked /> Yes, I
-                    will attend
+                <fieldset className="font-formal text-[15px] text-ink">
+                  <legend className="mx-auto block w-full text-center">Will you attend? *</legend>
+                  <label className="mt-3 flex items-center justify-center gap-2">
+                    <input
+                      type="radio"
+                      name="attend"
+                      value="yes"
+                      required
+                      defaultChecked
+                      className="accent-[#722f37]"
+                    />
+                    <span>Yes, I will attend</span>
                   </label>
-                  <label className="mt-1 flex items-center gap-2">
-                    <input type="radio" name="attend" value="no" /> No, I can&apos;t attend
+                  <label className="mt-2 flex items-center justify-center gap-2">
+                    <input type="radio" name="attend" value="no" className="accent-[#722f37]" />
+                    <span>No, I can&apos;t attend</span>
                   </label>
                 </fieldset>
-                <div className="text-sm">
-                  <p>Number of guests (including yourself)</p>
-                  <div className="mt-2 flex items-center gap-3">
+                <div className="font-formal text-[15px] text-ink">
+                  <p className="text-center">Number of guests (including yourself)</p>
+                  <div className="mt-3 flex items-center justify-center gap-4">
                     <button
                       type="button"
-                      className="h-8 w-8 rounded-full border border-black/15"
+                      aria-label="Decrease guests"
+                      className="flex h-9 w-9 items-center justify-center rounded-full border border-[#d9d0c6] bg-white text-lg leading-none text-ink"
                       onClick={() => setGuestCount((n) => Math.max(1, n - 1))}
                     >
                       −
                     </button>
-                    <span className="w-6 text-center">{guestCount}</span>
+                    <span className="font-display w-8 text-center text-xl tabular-nums">{guestCount}</span>
                     <button
                       type="button"
-                      className="h-8 w-8 rounded-full border border-black/15"
+                      aria-label="Increase guests"
+                      className="flex h-9 w-9 items-center justify-center rounded-full border border-[#d9d0c6] bg-white text-lg leading-none text-ink"
                       onClick={() => setGuestCount((n) => n + 1)}
                     >
                       +
@@ -528,12 +563,15 @@ export function InvitePage({ invite }: Props) {
                   </div>
                 </div>
                 {rsvpStatus === 'error' && (
-                  <p className="text-sm text-wine">{rsvpError || 'Could not send RSVP'}</p>
+                  <p className="font-ui text-center text-sm" style={{ color: '#722f37' }}>
+                    {rsvpError || 'Could not send RSVP'}
+                  </p>
                 )}
                 <button
                   type="submit"
                   disabled={rsvpStatus === 'sending'}
-                  className="mt-2 w-full rounded-full bg-wine py-3 font-display text-sm tracking-wide text-white disabled:opacity-60"
+                  className="font-display mt-1 w-full rounded-full py-3 text-[15px] tracking-wide disabled:opacity-60"
+                  style={{ backgroundColor: '#722f37', color: '#96d35f' }}
                 >
                   {rsvpStatus === 'sending' ? 'Sending…' : 'Send RSVP'}
                 </button>
