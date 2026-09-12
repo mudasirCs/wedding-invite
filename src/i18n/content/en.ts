@@ -1,0 +1,130 @@
+import type { InviteCopy } from '../types'
+
+export const en: InviteCopy = {
+  envelopeMessage: 'For Abdul Rafi and Abida',
+  partnerOne: 'abdul rafi',
+  partnerTwo: 'abida',
+  and: '&',
+  subtitle: 'He asked, she said yes',
+  dateLabel: '27 NOVEMBER 2026',
+  countdownTitle: 'Countdown',
+  countdownMessage: "We can't wait for  this moment!",
+  countdownDone: 'The day is here',
+  days: 'Days',
+  hours: 'Hours',
+  minutes: 'Minutes',
+  seconds: 'Seconds',
+  tapToOpen: 'Tap to open',
+  scrollToRsvp: 'Scroll to RSVP',
+  venueTitle: 'The Venue',
+  venueName: "Royal Albert's Palace",
+  venueAddress: '1050 King Georges Post Rd, Fords, NJ 08863',
+  getDirections: 'Get directions',
+  openInMaps: 'Open in Google Maps',
+  scheduleHeading: 'What have planned for you',
+  schedule: [
+    {
+      time: '14:00',
+      title: 'START',
+      description: 'We looking forward welcoming everybody with a drink',
+    },
+    { time: '15:00', title: 'LUNCH', description: 'Surprise lunch' },
+    { time: '17:00', title: 'PARTY', description: 'Let yourself go' },
+    { time: '02:00', title: 'END', description: 'All good things come to and end !' },
+  ],
+  dressCode: 'Casual Attire',
+  dressDetail: 'Casual Pool wear',
+  suggestedColors: 'Suggested colors:',
+  colorLabels: ['Taupe', 'White', 'Lavender', 'Rose Gold', 'Dusty'],
+  giftsTitle: 'Gifts',
+  giftsMessage:
+    'Your presence is your gift, but all contributions can go to the bank details below\nThank you',
+  registryName: 'amazon',
+  bankLabel: 'Prefer to contribute directly?',
+  bankName: 'KBC',
+  menuTitle: 'Menu',
+  menu: [
+    {
+      title: 'Starter',
+      items: [
+        {
+          name: 'Burrata & Heirloom Heirloom Medley',
+          description: 'Creamy Italian burrata paired with sun-ripened heirloom tomatoes',
+        },
+      ],
+    },
+    {
+      title: 'Main',
+      items: [
+        {
+          name: 'Miso-Glazed Beef Tenderloin',
+          description: 'Prime cut beef tenderloin, pan-seared and served over a silky parsnip purée.',
+        },
+      ],
+    },
+    {
+      title: 'desserts',
+      items: [
+        {
+          name: 'Velvet White Chocolate & Raspberry Mousse',
+          description: 'A light-as-air white chocolate dome',
+        },
+      ],
+    },
+  ],
+  textBlockTitle: 'Why This Is Special',
+  textBlockBody:
+    "I wanted to create something a little different this year—something more personal than just a card. Inside, you'll find a collection of memories, surprises, and little moments that made me think of you.",
+  galleryTitle: 'Photo Gallery',
+  gallerySubtitle: 'Moments we treasure',
+  faqTitle: 'FAQ',
+  faq: [
+    {
+      question: 'Can I bring a plus one?',
+      answer:
+        'By pressing your name in the rsvp, this will show if you can bring a plus one or not.',
+    },
+    {
+      question: 'Can I bring my parents?',
+      answer: 'yes, you can bring them as well, add them in the rsvp',
+    },
+    { question: 'Can I bring my Child', answer: 'Heeeeell Nooo' },
+  ],
+  accommodationHeading: 'Accommodation',
+  accommodationSubheading: 'Recommendations for your stay',
+  viewDetails: 'View details',
+  hotels: [
+    {
+      name: 'Lova',
+      description: 'You can book directly with the link below for a discount',
+      priceRange: '410 $',
+    },
+    {
+      name: 'Hotel Subtile',
+      description: 'You can book directly with the link below for a discount',
+      priceRange: '300$',
+    },
+  ],
+  rsvpHeading: 'RSVP',
+  rsvpSubheading: "We can't wait!",
+  rsvpReplyBy: 'Please reply by November 10th, 2026',
+  rsvpThanks: 'Thank you — your RSVP was received.',
+  fullName: 'Full name *',
+  phoneNumber: 'Phone number *',
+  willAttend: 'Will you attend? *',
+  attendYes: 'Yes, I will attend',
+  attendNo: "No, I can't attend",
+  guestsHeading: 'Number of guests (including yourself)',
+  male: 'Male',
+  female: 'Female',
+  total: 'Total',
+  sendRsvp: 'Send RSVP',
+  sending: 'Sending…',
+  rsvpNotConnected: 'RSVP is not connected yet.',
+  rsvpNetworkError: 'Could not reach the RSVP sheet',
+  rsvpFailed: 'RSVP failed',
+  somethingWentWrong: 'Something went wrong',
+  langLabel: 'EN',
+  muteMusic: 'Mute music',
+  playMusic: 'Play music',
+}

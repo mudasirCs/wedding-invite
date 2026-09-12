@@ -1,3 +1,5 @@
+import { useLanguage } from '../i18n/LanguageContext'
+
 type Props = {
   musicOn: boolean
   onToggle: () => void
@@ -5,17 +7,21 @@ type Props = {
 }
 
 export function TopChrome({ musicOn, onToggle, showMusic = true }: Props) {
+  const { lang, toggleLang, t } = useLanguage()
+
   return (
     <>
-      <div className="fixed top-4 right-4 z-[60] lg:right-[calc(50%-195px+1rem)]">
+      <div className="fixed top-4 z-[60] end-4 lg:end-[calc(50%-195px+1rem)]">
         <button
           type="button"
+          onClick={toggleLang}
           className="font-ui flex items-center gap-2 rounded-full border border-black/10 bg-white/90 px-3 py-2 text-sm shadow-md backdrop-blur-sm"
-          aria-label="Change language"
+          aria-label={lang === 'en' ? 'Switch to Pashto' : 'Switch to English'}
         >
           <GlobeIcon />
-          <span>🇺🇸</span>
-          <span className="text-xs tracking-wide uppercase">en</span>
+          <span className="text-xs tracking-wide" dir="auto">
+            {lang === 'en' ? 'پښتو' : 'EN'}
+          </span>
         </button>
       </div>
 
@@ -23,9 +29,9 @@ export function TopChrome({ musicOn, onToggle, showMusic = true }: Props) {
         <button
           type="button"
           onClick={onToggle}
-          aria-label={musicOn ? 'Mute music' : 'Play music'}
+          aria-label={musicOn ? t.muteMusic : t.playMusic}
           aria-pressed={musicOn}
-          className="fixed right-4 bottom-5 z-[60] flex h-12 w-12 items-center justify-center rounded-full bg-[#3a3a3a] text-white shadow-lg lg:right-[calc(50%-195px+1rem)]"
+          className="fixed end-4 bottom-5 z-[60] flex h-12 w-12 items-center justify-center rounded-full bg-[#3a3a3a] text-white shadow-lg lg:end-[calc(50%-195px+1rem)]"
         >
           {musicOn ? <SpeakerIcon /> : <SpeakerOffIcon />}
         </button>

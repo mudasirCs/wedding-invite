@@ -2,17 +2,21 @@ import { useEffect, useState, type FormEvent } from 'react'
 import { motion } from 'framer-motion'
 import type { InviteConfig } from '../data/invite'
 import { useCountdown } from '../hooks/useCountdown'
+import { useLanguage } from '../i18n/LanguageContext'
 
 type Props = {
   invite: InviteConfig
 }
 
 function ScrollHint({ visible }: { visible: boolean }) {
+  const { t, isRtl } = useLanguage()
   if (!visible) return null
   return (
     <div className="pointer-events-none fixed bottom-6 left-1/2 z-40 -translate-x-1/2 text-center lg:left-[calc(50%)]">
-      <p className="font-ui text-[11px] tracking-[0.18em] text-ink uppercase">
-        Scroll to RSVP
+      <p
+        className={`font-ui text-[11px] text-ink ${isRtl ? 'tracking-normal' : 'tracking-[0.18em] uppercase'}`}
+      >
+        {t.scrollToRsvp}
       </p>
       <svg
         className="mx-auto mt-1 text-ink"
@@ -31,20 +35,23 @@ function ScrollHint({ visible }: { visible: boolean }) {
   )
 }
 
-function Countdown({ dateISO, message }: { dateISO: string; message: string }) {
+function Countdown({ dateISO }: { dateISO: string }) {
+  const { t, isRtl } = useLanguage()
   const { days, hours, minutes, seconds, done } = useCountdown(dateISO)
   const cells = [
-    { label: 'Days', value: days },
-    { label: 'Hours', value: hours },
-    { label: 'Minutes', value: minutes },
-    { label: 'Seconds', value: seconds },
+    { label: t.days, value: days },
+    { label: t.hours, value: hours },
+    { label: t.minutes, value: minutes },
+    { label: t.seconds, value: seconds },
   ]
   return (
     <section className="px-8 py-12 text-center">
-      <h2 className="font-script text-[2.6rem] leading-none text-wine">Countdown</h2>
-      <p className="font-display mt-3 text-sm italic text-ink/65">{message}</p>
+      <h2 className="font-script text-[2.6rem] leading-none text-wine">{t.countdownTitle}</h2>
+      <p className={`font-display mt-3 text-sm text-ink/65 ${isRtl ? '' : 'italic'}`}>
+        {t.countdownMessage}
+      </p>
       {done ? (
-        <p className="font-script mt-8 text-2xl text-wine">The day is here</p>
+        <p className="font-script mt-8 text-2xl text-wine">{t.countdownDone}</p>
       ) : (
         <div className="mx-auto mt-8 max-w-[300px] rounded-2xl bg-white/45 px-3 py-4 backdrop-blur-md">
           <div className="grid grid-cols-4 gap-1">
@@ -53,7 +60,9 @@ function Countdown({ dateISO, message }: { dateISO: string; message: string }) {
                 <div className="font-display text-[1.65rem] tabular-nums text-ink">
                   {String(c.value).padStart(2, '0')}
                 </div>
-                <div className="mt-1 font-display text-[8px] tracking-[0.14em] text-ink/70 uppercase">
+                <div
+                  className={`mt-1 font-display text-[8px] text-ink/70 ${isRtl ? '' : 'tracking-[0.14em] uppercase'}`}
+                >
                   {c.label}
                 </div>
               </div>
@@ -66,6 +75,7 @@ function Countdown({ dateISO, message }: { dateISO: string; message: string }) {
 }
 
 export function InvitePage({ invite }: Props) {
+  const { t, isRtl } = useLanguage()
   const [maleGuests, setMaleGuests] = useState(1)
   const [femaleGuests, setFemaleGuests] = useState(0)
   const [showHint, setShowHint] = useState(true)
@@ -95,17 +105,17 @@ export function InvitePage({ invite }: Props) {
 
     if (!endpoint) {
       setRsvpStatus('error')
-      setRsvpError('RSVP is not connected yet. Add VITE_RSVP_SHEET_URL to .env')
+      setRsvpError(t.rsvpNotConnected)
       return
     }
     if (!phone) {
       setRsvpStatus('error')
-      setRsvpError('Phone number is required')
+      setRsvpError(t.phoneNumber)
       return
     }
     if (attending === 'yes' && maleGuests + femaleGuests < 1) {
       setRsvpStatus('error')
-      setRsvpError('Add at least one male or female guest')
+      setRsvpError(`${t.male} / ${t.female}`)
       return
     }
 
@@ -122,6 +132,7 @@ export function InvitePage({ invite }: Props) {
           attending,
           maleGuests,
           femaleGuests,
+          lang: isRtl ? 'ps' : 'en',
         }),
       })
       const raw = await res.text()
@@ -129,22 +140,26 @@ export function InvitePage({ invite }: Props) {
       try {
         data = JSON.parse(raw)
       } catch {
-        throw new Error('Could not reach the RSVP sheet')
+        throw new Error(t.rsvpNetworkError)
       }
-      if (!data.ok) throw new Error(data.error || 'RSVP failed')
+      if (!data.ok) throw new Error(data.error || t.rsvpFailed)
       setRsvpStatus('sent')
       form.reset()
       setMaleGuests(1)
       setFemaleGuests(0)
     } catch (err) {
       setRsvpStatus('error')
-      setRsvpError(err instanceof Error ? err.message : 'Something went wrong')
+      setRsvpError(err instanceof Error ? err.message : t.somethingWentWrong)
     }
   }
 
+  const schedule = t.schedule.map((item, i) => ({
+    ...item,
+    icon: invite.schedule.items[i]?.icon ?? '',
+  }))
+
   return (
     <div className="relative min-h-[100dvh] text-ink">
-      {/* Fixed background: scenic balcony on hero, mist frame continues underneath */}
       <div className="pointer-events-none fixed top-0 left-1/2 z-0 h-[100dvh] w-full max-w-[390px] -translate-x-1/2 overflow-hidden">
         <img
           src={invite.media.themePoster}
@@ -166,7 +181,6 @@ export function InvitePage({ invite }: Props) {
       <ScrollHint visible={showHint} />
 
       <div className="relative z-10">
-        {/* Hero — looping balcony with birds / water / clouds (demo theme video) */}
         <section className="relative flex h-[100dvh] flex-col items-center justify-center overflow-hidden px-10 text-center">
           <img
             src={invite.media.heroImage}
@@ -185,7 +199,6 @@ export function InvitePage({ invite }: Props) {
             preload="auto"
             style={{ filter: 'brightness(0.94) contrast(1.03)' }}
           />
-          {/* Light center wash — softens sun path without crushing the scene */}
           <div
             className="absolute inset-0"
             style={{
@@ -208,31 +221,30 @@ export function InvitePage({ invite }: Props) {
           >
             <h1
               className="font-headline leading-[1.25]"
-              style={{ fontSize: 37, color: invite.textColor }}
+              style={{ fontSize: isRtl ? 34 : 37, color: invite.textColor }}
             >
-              {invite.partnerOne}
+              {t.partnerOne}
             </h1>
             <span
-              className="my-1"
+              className="my-1 font-headline"
               style={{
-                fontSize: 22,
-                fontFamily: '"Pinyon Script", cursive',
+                fontSize: isRtl ? 20 : 22,
                 color: invite.textColor,
               }}
             >
-              &
+              {t.and}
             </span>
             <h1
               className="font-headline leading-[1.25]"
-              style={{ fontSize: 37, color: invite.textColor }}
+              style={{ fontSize: isRtl ? 34 : 37, color: invite.textColor }}
             >
-              {invite.partnerTwo}
+              {t.partnerTwo}
             </h1>
             <p
               className="font-display mt-5"
-              style={{ fontSize: 22, color: invite.subtitleColor }}
+              style={{ fontSize: isRtl ? 20 : 22, color: invite.subtitleColor }}
             >
-              {invite.subtitle}
+              {t.subtitle}
             </p>
             <div className="my-4 flex items-center gap-2" aria-hidden>
               <span className="h-px w-10 bg-ink/35" />
@@ -241,25 +253,24 @@ export function InvitePage({ invite }: Props) {
             </div>
             <p
               className="font-display tracking-[0.06em]"
-              style={{ fontSize: 17, color: invite.textColor }}
+              style={{ fontSize: isRtl ? 16 : 17, color: invite.textColor }}
             >
-              {invite.dateLabel}
+              {t.dateLabel}
             </p>
           </motion.div>
         </section>
 
-        <Countdown dateISO={invite.dateISO} message={invite.countdownMessage} />
+        <Countdown dateISO={invite.dateISO} />
 
-        {/* Venue */}
         <section className="px-8 py-10 text-center">
-          <h2 className="font-script text-[2.6rem] text-wine">The Venue</h2>
+          <h2 className="font-script text-[2.6rem] text-wine">{t.venueTitle}</h2>
           <img
             src={invite.venue.imageUrl}
             alt=""
             className="mx-auto mt-5 w-[85%] max-w-[300px] object-contain drop-shadow-md"
           />
-          <h3 className="font-script mt-5 text-3xl text-wine">{invite.venue.name}</h3>
-          <p className="font-formal mt-2 text-sm text-ink/75">{invite.venue.address}</p>
+          <h3 className="font-script mt-5 text-3xl text-wine">{t.venueName}</h3>
+          <p className="font-formal mt-2 text-sm text-ink/75">{t.venueAddress}</p>
           <a
             href={invite.venue.mapsUrl}
             target="_blank"
@@ -269,17 +280,14 @@ export function InvitePage({ invite }: Props) {
             <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#c9a0dc]/35 text-xs">
               ➤
             </span>
-            <span className="text-left">
-              <span className="font-formal block text-sm text-ink">Get directions</span>
-              <span className="font-formal block text-[11px] text-ink/55">
-                Open in Google Maps
-              </span>
+            <span className="text-start">
+              <span className="font-formal block text-sm text-ink">{t.getDirections}</span>
+              <span className="font-formal block text-[11px] text-ink/55">{t.openInMaps}</span>
             </span>
             <span className="text-ink/40">↗</span>
           </a>
         </section>
 
-        {/* Schedule */}
         <section className="px-8 py-12">
           <div className="mb-8 text-center">
             <img
@@ -287,19 +295,17 @@ export function InvitePage({ invite }: Props) {
               alt=""
               className="mx-auto mb-3 h-14 w-14 object-contain"
             />
-            <p className="font-script text-[1.7rem] leading-snug text-wine">
-              {invite.schedule.heading}
-            </p>
+            <p className="font-script text-[1.7rem] leading-snug text-wine">{t.scheduleHeading}</p>
           </div>
           <div className="relative mx-auto max-w-sm">
-            <div className="absolute top-4 bottom-4 left-[1.35rem] w-px bg-ink/25" />
+            <div className="absolute top-4 bottom-4 start-[1.35rem] w-px bg-ink/25" />
             <ol className="space-y-10">
-              {invite.schedule.items.map((item) => (
+              {schedule.map((item) => (
                 <li key={`${item.time}-${item.title}`} className="relative flex gap-4">
                   <div className="relative z-10 flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white/70 shadow-sm backdrop-blur">
                     <img src={item.icon} alt="" className="h-8 w-8 object-contain" />
                   </div>
-                  <div>
+                  <div className="text-start">
                     <p className="font-ui text-base font-semibold text-ink">{item.time}</p>
                     <p className="font-script text-2xl text-wine">{item.title}</p>
                     <p className="font-formal mt-1 text-xs text-ink/60">{item.description}</p>
@@ -310,41 +316,41 @@ export function InvitePage({ invite }: Props) {
           </div>
         </section>
 
-        {/* Dress code */}
         <section className="px-6 py-12 text-center">
-          <h2 className="font-script text-[2.5rem] text-wine">{invite.dressCode.code}</h2>
+          <h2 className="font-script text-[2.5rem] text-wine">{t.dressCode}</h2>
           <div className="mx-auto mt-5 max-w-[320px] rounded-3xl bg-white/50 p-5 backdrop-blur-md">
             <img
               src={invite.dressCode.imageUrl}
               alt=""
               className="mx-auto w-full object-contain"
             />
-            <p className="font-script mt-3 text-2xl text-wine">{invite.dressCode.detail}</p>
-            <p className="font-display mt-5 text-sm text-ink/70">Suggested colors:</p>
+            <p className="font-script mt-3 text-2xl text-wine">{t.dressDetail}</p>
+            <p className="font-display mt-5 text-sm text-ink/70">{t.suggestedColors}</p>
             <div className="mt-3 flex flex-wrap justify-center gap-3">
-              {invite.dressCode.colors.map((c) => (
-                <div key={c.label} className="flex flex-col items-center gap-1">
+              {invite.dressCode.colors.map((c, i) => (
+                <div key={c.hex} className="flex flex-col items-center gap-1">
                   <span
                     className="h-9 w-9 rounded-full border border-black/10 shadow-inner"
                     style={{ background: c.hex }}
                   />
-                  <span className="font-formal text-[10px] text-ink/65">{c.label}</span>
+                  <span className="font-formal text-[10px] text-ink/65">
+                    {t.colorLabels[i] ?? c.label}
+                  </span>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* Gifts */}
         <section className="px-8 py-12 text-center">
           <img
             src="/media/icons/icon-giftlist.png"
             alt=""
             className="mx-auto mb-3 h-14 w-14 object-contain"
           />
-          <h2 className="font-script text-[2.6rem] text-wine">Gifts</h2>
+          <h2 className="font-script text-[2.6rem] text-wine">{t.giftsTitle}</h2>
           <p className="mx-auto mt-4 max-w-sm whitespace-pre-line font-formal text-sm leading-relaxed text-ink/70">
-            {invite.gifts.message}
+            {t.giftsMessage}
           </p>
           <a
             href={invite.gifts.registryUrl}
@@ -352,22 +358,17 @@ export function InvitePage({ invite }: Props) {
             rel="noreferrer"
             className="font-formal mt-4 inline-block text-sm capitalize underline-offset-4 hover:underline"
           >
-            {invite.gifts.registryName}
+            {t.registryName}
           </a>
-          <p className="mt-5 font-formal text-sm text-ink/55">{invite.gifts.bankLabel}</p>
-          <p className="font-script text-xl text-wine">{invite.gifts.bankName}</p>
+          <p className="mt-5 font-formal text-sm text-ink/55">{t.bankLabel}</p>
+          <p className="font-script text-xl text-wine">{t.bankName}</p>
         </section>
 
-        {/* Menu */}
         <section className="px-8 py-12 text-center">
-          <img
-            src="/media/menu-frame.png"
-            alt=""
-            className="mx-auto mb-4 w-36 object-contain"
-          />
-          <h2 className="font-script mb-8 text-[2.6rem] text-wine">Menu</h2>
+          <img src="/media/menu-frame.png" alt="" className="mx-auto mb-4 w-36 object-contain" />
+          <h2 className="font-script mb-8 text-[2.6rem] text-wine">{t.menuTitle}</h2>
           <div className="space-y-8">
-            {invite.menu.map((cat) => (
+            {t.menu.map((cat) => (
               <div key={cat.title}>
                 <p className="mb-2 text-sm tracking-wide text-ink/45">— {cat.title} —</p>
                 {cat.items.map((item) => (
@@ -381,19 +382,17 @@ export function InvitePage({ invite }: Props) {
           </div>
         </section>
 
-        {/* Text block */}
         <section className="px-8 py-12 text-center">
-          <h2 className="font-script text-[2.3rem] text-wine">{invite.textBlock.title}</h2>
+          <h2 className="font-script text-[2.3rem] text-wine">{t.textBlockTitle}</h2>
           <p className="mx-auto mt-4 max-w-sm font-formal text-sm leading-relaxed text-ink/70">
-            {invite.textBlock.text}
+            {t.textBlockBody}
           </p>
         </section>
 
-        {/* Gallery */}
         <section className="px-8 py-12 text-center">
-          <h2 className="font-script text-[2.5rem] text-wine">{invite.gallery.title}</h2>
-          <p className="mt-2 font-display text-sm italic text-ink/55">
-            {invite.gallery.subtitle}
+          <h2 className="font-script text-[2.5rem] text-wine">{t.galleryTitle}</h2>
+          <p className={`mt-2 font-display text-sm text-ink/55 ${isRtl ? '' : 'italic'}`}>
+            {t.gallerySubtitle}
           </p>
           <div className="relative mx-auto mt-8 w-[250px]">
             <img
@@ -412,100 +411,98 @@ export function InvitePage({ invite }: Props) {
           </div>
         </section>
 
-        {/* FAQ */}
         <section className="px-8 py-12">
           <img
             src="/media/icons/icon-faq.png"
             alt=""
             className="mx-auto mb-3 h-14 w-14 object-contain"
           />
-          <h2 className="font-script mb-6 text-center text-[2.6rem] text-wine">FAQ</h2>
+          <h2 className="font-script mb-6 text-center text-[2.6rem] text-wine">{t.faqTitle}</h2>
           <div className="space-y-3">
-            {invite.faq.map((f) => (
+            {t.faq.map((f) => (
               <details
                 key={f.question}
                 className="rounded-2xl border border-white/40 bg-white/45 px-4 py-3 backdrop-blur-md open:bg-white/65"
               >
-                <summary className="font-display cursor-pointer text-base">{f.question}</summary>
-                <p className="mt-2 font-formal text-sm text-ink/65">{f.answer}</p>
+                <summary className="font-display cursor-pointer text-base text-start">
+                  {f.question}
+                </summary>
+                <p className="mt-2 font-formal text-sm text-ink/65 text-start">{f.answer}</p>
               </details>
             ))}
           </div>
         </section>
 
-        {/* Accommodation */}
         <section className="px-8 py-12 text-center">
           <img
             src="/media/icons/icon-accommodation.png"
             alt=""
             className="mx-auto mb-3 h-14 w-14 object-contain"
           />
-          <h2 className="font-script text-[2.6rem] text-wine">
-            {invite.accommodation.heading}
-          </h2>
-          <p className="mt-2 font-formal text-sm text-ink/55">
-            {invite.accommodation.subheading}
-          </p>
+          <h2 className="font-script text-[2.6rem] text-wine">{t.accommodationHeading}</h2>
+          <p className="mt-2 font-formal text-sm text-ink/55">{t.accommodationSubheading}</p>
           <div className="mt-8 space-y-8">
-            {invite.accommodation.hotels.map((h) => (
-              <div key={h.name} className="text-center">
-                <img
-                  src={h.imageUrl}
-                  alt={h.name}
-                  className="mx-auto max-h-48 w-auto max-w-[220px] object-contain"
-                />
-                <h3 className="font-script mt-3 text-3xl text-wine">{h.name}</h3>
-                <p className="mt-1 font-formal text-sm text-ink/65">{h.description}</p>
-                <p className="font-display mt-2 text-ink">
-                  {h.priceRange}{' '}
-                  <a
-                    href={h.url}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="font-formal text-sm underline-offset-2 hover:underline"
-                  >
-                    ↗ View details
-                  </a>
-                </p>
-              </div>
-            ))}
+            {t.hotels.map((h, i) => {
+              const meta = invite.accommodation.hotels[i]
+              return (
+                <div key={h.name} className="text-center">
+                  <img
+                    src={meta?.imageUrl}
+                    alt={h.name}
+                    className="mx-auto max-h-48 w-auto max-w-[220px] object-contain"
+                  />
+                  <h3 className="font-script mt-3 text-3xl text-wine">{h.name}</h3>
+                  <p className="mt-1 font-formal text-sm text-ink/65">{h.description}</p>
+                  <p className="font-display mt-2 text-ink">
+                    {h.priceRange}{' '}
+                    <a
+                      href={meta?.url}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="font-formal text-sm underline-offset-2 hover:underline"
+                    >
+                      ↗ {t.viewDetails}
+                    </a>
+                  </p>
+                </div>
+              )
+            })}
           </div>
         </section>
 
-        {/* RSVP — fonts/colors from demo rsvp_config */}
         <section id="rsvp" className="relative px-5 pb-28 pt-6">
           <div className="relative overflow-hidden rounded-[1.75rem] border border-white/60 bg-[#fffcf7]/92 px-5 pb-8 pt-7 shadow-[0_18px_50px_rgba(80,40,80,0.10)] backdrop-blur-md">
             <img
               src="/media/rsvp-floral-corner.png"
               alt=""
               aria-hidden
-              className="pointer-events-none absolute -top-2 -left-2 w-[7.5rem] rotate-180 opacity-90"
+              className="pointer-events-none absolute -top-2 -start-2 w-[7.5rem] rotate-180 opacity-90"
             />
             <img
               src="/media/rsvp-floral-corner.png"
               alt=""
               aria-hidden
-              className="pointer-events-none absolute -right-2 -bottom-2 w-[7.5rem] opacity-90"
+              className="pointer-events-none absolute -end-2 -bottom-2 w-[7.5rem] opacity-90"
             />
 
             <div className="relative z-10 text-center">
               <h2
                 className="font-headline text-center leading-none"
-                style={{ fontSize: 42, color: '#722f37', fontWeight: 400 }}
+                style={{ fontSize: isRtl ? 36 : 42, color: '#722f37', fontWeight: 400 }}
               >
-                {invite.rsvp.heading}
+                {t.rsvpHeading}
               </h2>
               <p
-                className="mt-2 text-center"
-                style={{ fontSize: 12, color: '#000000', fontFamily: 'Raleway, system-ui, sans-serif' }}
+                className="mt-2 text-center font-ui"
+                style={{ fontSize: isRtl ? 13 : 12, color: '#000000' }}
               >
-                {invite.rsvp.subheading}
+                {t.rsvpSubheading}
               </p>
               <p
                 className="font-script mt-1.5 text-center leading-none"
                 style={{ fontSize: 18, color: '#442727' }}
               >
-                {invite.rsvp.replyBy}
+                {t.rsvpReplyBy}
               </p>
             </div>
 
@@ -514,15 +511,15 @@ export function InvitePage({ invite }: Props) {
                 className="relative z-10 mt-8 text-center font-display"
                 style={{ color: '#722f37', fontSize: 16 }}
               >
-                Thank you — your RSVP was received.
+                {t.rsvpThanks}
               </p>
             ) : (
               <form
-                className="relative z-10 mx-auto mt-7 w-full max-w-[300px] space-y-5 text-left"
+                className="relative z-10 mx-auto mt-7 w-full max-w-[300px] space-y-5"
                 onSubmit={submitRsvp}
               >
                 <label className="font-formal block text-[15px] leading-snug text-ink">
-                  <span className="block text-center">Full name *</span>
+                  <span className="block text-center">{t.fullName}</span>
                   <input
                     name="name"
                     required
@@ -531,7 +528,7 @@ export function InvitePage({ invite }: Props) {
                   />
                 </label>
                 <label className="font-formal block text-[15px] leading-snug text-ink">
-                  <span className="block text-center">Phone number *</span>
+                  <span className="block text-center">{t.phoneNumber}</span>
                   <input
                     name="phone"
                     type="tel"
@@ -539,10 +536,11 @@ export function InvitePage({ invite }: Props) {
                     autoComplete="tel"
                     inputMode="tel"
                     className="font-ui mt-2 w-full rounded-lg border border-[#d9d0c6] bg-white px-3 py-2.5 text-center text-[14px] text-ink outline-none focus:border-[#722f37]/40"
+                    dir="ltr"
                   />
                 </label>
                 <fieldset className="font-formal text-[15px] text-ink">
-                  <legend className="mx-auto block w-full text-center">Will you attend? *</legend>
+                  <legend className="mx-auto block w-full text-center">{t.willAttend}</legend>
                   <label className="mt-3 flex items-center justify-center gap-2">
                     <input
                       type="radio"
@@ -552,19 +550,19 @@ export function InvitePage({ invite }: Props) {
                       defaultChecked
                       className="accent-[#722f37]"
                     />
-                    <span>Yes, I will attend</span>
+                    <span>{t.attendYes}</span>
                   </label>
                   <label className="mt-2 flex items-center justify-center gap-2">
                     <input type="radio" name="attend" value="no" className="accent-[#722f37]" />
-                    <span>No, I can&apos;t attend</span>
+                    <span>{t.attendNo}</span>
                   </label>
                 </fieldset>
                 <div className="font-formal space-y-4 text-[15px] text-ink">
-                  <p className="text-center">Number of guests (including yourself)</p>
+                  <p className="text-center">{t.guestsHeading}</p>
                   {(
                     [
-                      ['Male', maleGuests, setMaleGuests],
-                      ['Female', femaleGuests, setFemaleGuests],
+                      [t.male, maleGuests, setMaleGuests],
+                      [t.female, femaleGuests, setFemaleGuests],
                     ] as const
                   ).map(([label, value, setValue]) => (
                     <div key={label}>
@@ -572,18 +570,18 @@ export function InvitePage({ invite }: Props) {
                       <div className="mt-2 flex items-center justify-center gap-4">
                         <button
                           type="button"
-                          aria-label={`Decrease ${label.toLowerCase()} guests`}
+                          aria-label={label}
                           className="flex h-9 w-9 items-center justify-center rounded-full border border-[#d9d0c6] bg-white text-lg leading-none text-ink"
                           onClick={() => setValue((n) => Math.max(0, n - 1))}
                         >
                           −
                         </button>
-                        <span className="font-display w-8 text-center text-xl tabular-nums">
+                        <span className="font-display w-8 text-center text-xl tabular-nums" dir="ltr">
                           {value}
                         </span>
                         <button
                           type="button"
-                          aria-label={`Increase ${label.toLowerCase()} guests`}
+                          aria-label={label}
                           className="flex h-9 w-9 items-center justify-center rounded-full border border-[#d9d0c6] bg-white text-lg leading-none text-ink"
                           onClick={() => setValue((n) => n + 1)}
                         >
@@ -593,12 +591,12 @@ export function InvitePage({ invite }: Props) {
                     </div>
                   ))}
                   <p className="text-center font-ui text-[12px] text-ink/55">
-                    Total: {maleGuests + femaleGuests}
+                    {t.total}: <span dir="ltr">{maleGuests + femaleGuests}</span>
                   </p>
                 </div>
                 {rsvpStatus === 'error' && (
                   <p className="font-ui text-center text-sm" style={{ color: '#722f37' }}>
-                    {rsvpError || 'Could not send RSVP'}
+                    {rsvpError}
                   </p>
                 )}
                 <button
@@ -607,7 +605,7 @@ export function InvitePage({ invite }: Props) {
                   className="font-display mt-1 w-full rounded-full py-3 text-[15px] tracking-wide disabled:opacity-60"
                   style={{ backgroundColor: '#722f37', color: '#96d35f' }}
                 >
-                  {rsvpStatus === 'sending' ? 'Sending…' : 'Send RSVP'}
+                  {rsvpStatus === 'sending' ? t.sending : t.sendRsvp}
                 </button>
               </form>
             )}

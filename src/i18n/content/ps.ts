@@ -1,0 +1,130 @@
+import type { InviteCopy } from '../types'
+
+/** Pashto (پښتو) — Nastaliq-friendly wedding copy */
+export const ps: InviteCopy = {
+  envelopeMessage: 'د عبدالرافع او عابدې لپاره',
+  partnerOne: 'عبدالرافع',
+  partnerTwo: 'عابده',
+  and: 'او',
+  subtitle: 'هغه وپوښتل، هغې وویل هو',
+  dateLabel: '۲۷ نومبر ۲۰۲۶',
+  countdownTitle: 'شمېرنه',
+  countdownMessage: 'موږ د دې شیبې په تمه یو!',
+  countdownDone: 'ورځ راغله',
+  days: 'ورځې',
+  hours: 'ساعتونه',
+  minutes: 'دقیقې',
+  seconds: 'ثانیې',
+  tapToOpen: 'د پرانیستلو لپاره لمس کړئ',
+  scrollToRsvp: 'RSVP ته ورشئ',
+  venueTitle: 'ځای',
+  venueName: 'رویل البرټس پیلس',
+  venueAddress: '۱۰۵۰ کینګ جورجز پوسټ روډ، فورډز، نیو جرسي ۰۸۸۶۳',
+  getDirections: 'لارښوونې ترلاسه کړئ',
+  openInMaps: 'په ګوګل نقشو کې پرانیزئ',
+  scheduleHeading: 'ستاسو لپاره مو څه پلان کړي',
+  schedule: [
+    {
+      time: '۱۴:۰۰',
+      title: 'پیل',
+      description: 'موږ د هر چا د ښه راغلاست او یو څښاک په تمه یو',
+    },
+    { time: '۱۵:۰۰', title: 'ګرمې خواړه', description: 'حیرانوونکې ګرمې خواړه' },
+    { time: '۱۷:۰۰', title: 'پارټي', description: 'ځان ازاد کړئ او خوند واخلئ' },
+    { time: '۰۲:۰۰', title: 'پای', description: 'ټولې ښې چارې پای ته رسېږي!' },
+  ],
+  dressCode: 'عادي جامې',
+  dressDetail: 'عادي / پول جامې',
+  suggestedColors: 'وړاندیز شوي رنګونه:',
+  colorLabels: ['تاپ', 'سپین', 'لیونډر', 'ګلابي سرو زرو', 'خړ'],
+  giftsTitle: 'ډالۍ',
+  giftsMessage:
+    'ستاسو شتون زموږ لپاره ډالۍ ده؛ که مرسته کول غواړئ، لاندې بانکي جزئیاتو ته یې واستوئ\nمننه',
+  registryName: 'amazon',
+  bankLabel: 'مستقیمې مرستې غوره کوئ؟',
+  bankName: 'KBC',
+  menuTitle: 'مینو',
+  menu: [
+    {
+      title: 'پیل',
+      items: [
+        {
+          name: 'بوراتا او روميان',
+          description: 'کریمي ایټالوي بوراتا د لمر لیدلو روميانو سره',
+        },
+      ],
+    },
+    {
+      title: 'اصلي خواړه',
+      items: [
+        {
+          name: 'میسو غوښه',
+          description: 'غوره غوښه، په پین کې سورې شوې او د نرمې پیوري سره',
+        },
+      ],
+    },
+    {
+      title: 'خواږه',
+      items: [
+        {
+          name: 'سپینه چاکلیټ او راسبیري موس',
+          description: 'سپکه او هوايي سپینه چاکلیټ',
+        },
+      ],
+    },
+  ],
+  textBlockTitle: 'ولې دا ځانګړې ده',
+  textBlockBody:
+    'سږ کال مې غوښتل یو څه بیل جوړ کړم — د یوې عادي کارت څخه لا شخصي. دلته به خاطرات، حیرانتیاوې او هغه کوچني شیبان ومومئ چې تاسو راته یاد کړئ.',
+  galleryTitle: 'عکسونه',
+  gallerySubtitle: 'هغه شیبان چې موږ یې ساتو',
+  faqTitle: 'پوښتنې',
+  faq: [
+    {
+      question: 'ایا زه یو ملګری راوړلی شم؟',
+      answer: 'په RSVP کې خپل نوم ولیکئ؛ هلته به وښودل شي چې ایا ملګری راوړلی شئ که نه.',
+    },
+    {
+      question: 'ایا خپل مور او پلار راوړلی شم؟',
+      answer: 'هو، تاسو هغوی هم راوړلی شئ — په RSVP کې یې زیات کړئ',
+    },
+    { question: 'ایا ماشوم راوړلی شم؟', answer: 'مهرباني وکړئ نه' },
+  ],
+  accommodationHeading: 'استوګنځای',
+  accommodationSubheading: 'ستاسو د پاتې کېدو لپاره وړاندیزونه',
+  viewDetails: 'جزئیات وګورئ',
+  hotels: [
+    {
+      name: 'Lova',
+      description: 'د تخفیف لپاره لاندې لینک څخه مستقیم بک کړئ',
+      priceRange: '۴۱۰ $',
+    },
+    {
+      name: 'Hotel Subtile',
+      description: 'د تخفیف لپاره لاندې لینک څخه مستقیم بک کړئ',
+      priceRange: '۳۰۰$',
+    },
+  ],
+  rsvpHeading: 'RSVP',
+  rsvpSubheading: 'موږ په تمه یو!',
+  rsvpReplyBy: 'مهرباني وکړئ تر ۱۰ نومبر ۲۰۲۶ ځواب ورکړئ',
+  rsvpThanks: 'مننه — ستاسو RSVP ترلاسه شو.',
+  fullName: 'بشپړ نوم *',
+  phoneNumber: 'د تلیفون شمېره *',
+  willAttend: 'آیا تاسو برخه اخلئ؟ *',
+  attendYes: 'هو، زه به برخه واخلم',
+  attendNo: 'نه، زه نشم کولی',
+  guestsHeading: 'د میلمه شمېر (په شمول خپل ځان)',
+  male: 'نر',
+  female: 'ښځه',
+  total: 'ټول',
+  sendRsvp: 'RSVP واستوئ',
+  sending: 'لیږل کېږي…',
+  rsvpNotConnected: 'RSVP لا نه دی وصل شوی.',
+  rsvpNetworkError: 'د RSVP پاڼې سره اړیکه ونشوه',
+  rsvpFailed: 'RSVP ناکام شو',
+  somethingWentWrong: 'یوه ستونزه رامنځته شوه',
+  langLabel: 'پښتو',
+  muteMusic: 'موسیقي بند کړئ',
+  playMusic: 'موسیقي وغږوئ',
+}

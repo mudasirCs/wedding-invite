@@ -1,24 +1,18 @@
 import { useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
+import { useLanguage } from '../i18n/LanguageContext'
 
 type Props = {
   videoSrc: string
   poster: string
-  message: string
   playing: boolean
   onTap: () => void
   onPlayEnd: () => void
 }
 
 /** Sealed wisteria gate with bow — matches recorded demo exactly */
-export function SealedScreen({
-  videoSrc,
-  poster,
-  message,
-  playing,
-  onTap,
-  onPlayEnd,
-}: Props) {
+export function SealedScreen({ videoSrc, poster, playing, onTap, onPlayEnd }: Props) {
+  const { t, isRtl } = useLanguage()
   const ref = useRef<HTMLVideoElement>(null)
   const ended = useRef(false)
 
@@ -41,7 +35,6 @@ export function SealedScreen({
       onPlayEnd()
     }
     const onTime = () => {
-      // Cut before the bright god-ray / white flash
       if (v.currentTime >= 2.85) finish()
     }
     v.addEventListener('ended', finish)
@@ -75,36 +68,35 @@ export function SealedScreen({
       <button
         type="button"
         className="absolute inset-0 z-20 border-0 bg-transparent p-0"
-        aria-label="Tap to open"
+        aria-label={t.tapToOpen}
         disabled={playing}
         onClick={onTap}
       />
 
       {!playing ? (
         <div className="pointer-events-none absolute inset-0 z-30">
-          {/* Message sits just below the bow, above the railing */}
           <p
-            className="absolute inset-x-6 text-center"
+            className="absolute inset-x-6 text-center font-script"
             style={{
               top: '54%',
-              fontFamily: '"Great Vibes", cursive',
-              fontSize: 28,
+              fontSize: isRtl ? 24 : 28,
               color: '#6b1f2a',
               textShadow: '0 1px 0 rgba(255,255,255,0.35)',
+              lineHeight: isRtl ? 1.8 : 1.25,
             }}
           >
-            {message}
+            {t.envelopeMessage}
           </p>
           <p
-            className="absolute inset-x-0 text-center"
+            className="absolute inset-x-0 text-center font-script"
             style={{
               bottom: '4.5%',
-              fontFamily: '"Great Vibes", cursive',
-              fontSize: 16,
+              fontSize: isRtl ? 15 : 16,
               color: '#6b1f2a',
+              lineHeight: isRtl ? 1.7 : 1.25,
             }}
           >
-            Tap to open
+            {t.tapToOpen}
           </p>
         </div>
       ) : null}

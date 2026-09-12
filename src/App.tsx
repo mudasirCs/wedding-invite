@@ -56,7 +56,6 @@ export default function App() {
               key="sealed"
               videoSrc={invite.media.openingVideo}
               poster={invite.media.sealedPoster}
-              message={invite.envelopeMessage}
               playing={phase === 'playing'}
               onTap={() => setPhase('playing')}
               onPlayEnd={onPlayEnd}
