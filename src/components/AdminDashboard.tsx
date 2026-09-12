@@ -4,13 +4,15 @@ export type RsvpRow = {
   id: number
   timestamp: string
   name: string
-  email: string
+  phone: string
   attending: string
+  maleGuests: number
+  femaleGuests: number
   guests: number
 }
 
 type AttendFilter = 'all' | 'yes' | 'no'
-type SortKey = 'timestamp' | 'name' | 'email' | 'guests' | 'attending'
+type SortKey = 'timestamp' | 'name' | 'phone' | 'attending' | 'maleGuests' | 'femaleGuests' | 'guests'
 
 function formatWhen(iso: string) {
   if (!iso) return '—'
@@ -23,11 +25,27 @@ function formatWhen(iso: string) {
 }
 
 function downloadCsv(rows: RsvpRow[]) {
-  const header = ['Timestamp', 'Name', 'Email', 'Attending', 'Guests']
+  const header = [
+    'Timestamp',
+    'Name',
+    'Phone',
+    'Attending',
+    'Male Guests',
+    'Female Guests',
+    'Total Guests',
+  ]
   const lines = [
     header.join(','),
     ...rows.map((r) =>
-      [r.timestamp, r.name, r.email, r.attending, String(r.guests)]
+      [
+        r.timestamp,
+        r.name,
+        r.phone,
+        r.attending,
+        String(r.maleGuests),
+        String(r.femaleGuests),
+        String(r.guests),
+      ]
         .map((cell) => `"${String(cell).replaceAll('"', '""')}"`)
         .join(','),
     ),
@@ -67,7 +85,17 @@ export function AdminDashboard() {
       const raw = await res.text()
       const data = JSON.parse(raw) as { ok?: boolean; rows?: RsvpRow[]; error?: string }
       if (!data.ok) throw new Error(data.error || 'Failed to load RSVPs')
-      setRows(data.rows || [])
+      setRows(
+        (data.rows || []).map((r) => ({
+          ...r,
+          phone: r.phone || '',
+          maleGuests: Number(r.maleGuests) || 0,
+          femaleGuests: Number(r.femaleGuests) || 0,
+          guests:
+            Number(r.guests) ||
+            (Number(r.maleGuests) || 0) + (Number(r.femaleGuests) || 0),
+        })),
+      )
     } catch (err) {
       setError(
         err instanceof Error
@@ -94,17 +122,21 @@ export function AdminDashboard() {
       if (!q) return true
       return (
         r.name.toLowerCase().includes(q) ||
-        r.email.toLowerCase().includes(q) ||
+        r.phone.toLowerCase().includes(q) ||
         r.attending.toLowerCase().includes(q)
       )
     })
 
     list = [...list].sort((a, b) => {
       let cmp = 0
-      if (sortKey === 'name' || sortKey === 'attending' || sortKey === 'email') {
+      if (sortKey === 'name' || sortKey === 'attending' || sortKey === 'phone') {
         cmp = String(a[sortKey]).localeCompare(String(b[sortKey]))
-      } else if (sortKey === 'guests') {
-        cmp = a.guests - b.guests
+      } else if (
+        sortKey === 'guests' ||
+        sortKey === 'maleGuests' ||
+        sortKey === 'femaleGuests'
+      ) {
+        cmp = a[sortKey] - b[sortKey]
       } else {
         cmp = new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
       }
@@ -116,12 +148,15 @@ export function AdminDashboard() {
   const stats = useMemo(() => {
     const yes = rows.filter((r) => r.attending === 'yes')
     const no = rows.filter((r) => r.attending === 'no')
-    const guestTotal = yes.reduce((sum, r) => sum + r.guests, 0)
+    const male = yes.reduce((sum, r) => sum + r.maleGuests, 0)
+    const female = yes.reduce((sum, r) => sum + r.femaleGuests, 0)
     return {
       responses: rows.length,
       yes: yes.length,
       no: no.length,
-      guests: guestTotal,
+      male,
+      female,
+      guests: male + female,
     }
   }, [rows])
 
@@ -141,7 +176,9 @@ export function AdminDashboard() {
       <header className="border-b border-black/8 bg-[#faf7f1]/90 backdrop-blur-md">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-4 sm:px-6">
           <div>
-            <p className="font-ui text-[11px] tracking-[0.2em] text-muted uppercase">Wedding invite</p>
+            <p className="font-ui text-[11px] tracking-[0.2em] text-muted uppercase">
+              Abdul Rafi & Abida
+            </p>
             <h1 className="font-display text-2xl text-wine sm:text-3xl">RSVP dashboard</h1>
           </div>
           <div className="flex flex-wrap gap-2">
@@ -171,12 +208,14 @@ export function AdminDashboard() {
       </header>
 
       <main className="mx-auto max-w-6xl px-4 py-6 sm:px-6">
-        <section className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <section className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
           {[
             { label: 'Responses', value: stats.responses },
             { label: 'Attending', value: stats.yes },
             { label: 'Declined', value: stats.no },
-            { label: 'Guest seats', value: stats.guests },
+            { label: 'Male', value: stats.male },
+            { label: 'Female', value: stats.female },
+            { label: 'Total guests', value: stats.guests },
           ].map((s) => (
             <div
               key={s.label}
@@ -194,16 +233,18 @@ export function AdminDashboard() {
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search name or email…"
+              placeholder="Search name or phone…"
               className="font-ui w-full rounded-xl border border-black/10 bg-white px-4 py-2.5 text-sm outline-none ring-wine/30 focus:ring-2"
             />
           </label>
           <div className="flex flex-wrap gap-2">
-            {([
-              ['all', 'All'],
-              ['yes', 'Attending'],
-              ['no', 'Declined'],
-            ] as const).map(([value, label]) => (
+            {(
+              [
+                ['all', 'All'],
+                ['yes', 'Attending'],
+                ['no', 'Declined'],
+              ] as const
+            ).map(([value, label]) => (
               <button
                 key={value}
                 type="button"
@@ -245,16 +286,18 @@ export function AdminDashboard() {
           ) : (
             <>
               <div className="overflow-x-auto">
-                <table className="w-full min-w-[640px] text-left">
+                <table className="w-full min-w-[760px] text-left">
                   <thead className="border-b border-black/8 bg-[#f7f1e8]">
                     <tr className="font-ui text-[11px] tracking-[0.12em] text-muted uppercase">
                       {(
                         [
                           ['timestamp', 'When'],
                           ['name', 'Name'],
-                          ['email', 'Email'],
+                          ['phone', 'Phone'],
                           ['attending', 'Status'],
-                          ['guests', 'Guests'],
+                          ['maleGuests', 'Male'],
+                          ['femaleGuests', 'Female'],
+                          ['guests', 'Total'],
                         ] as const
                       ).map(([key, label]) => (
                         <th key={key} className="px-4 py-3 font-medium">
@@ -272,15 +315,21 @@ export function AdminDashboard() {
                   </thead>
                   <tbody>
                     {pageRows.map((r) => (
-                      <tr key={r.id} className="border-b border-black/5 last:border-0 hover:bg-[#faf6ef]">
-                        <td className="font-ui px-4 py-3 text-sm text-ink/70 whitespace-nowrap">
+                      <tr
+                        key={r.id}
+                        className="border-b border-black/5 last:border-0 hover:bg-[#faf6ef]"
+                      >
+                        <td className="font-ui px-4 py-3 text-sm whitespace-nowrap text-ink/70">
                           {formatWhen(r.timestamp)}
                         </td>
                         <td className="font-display px-4 py-3 text-base">{r.name}</td>
                         <td className="font-ui px-4 py-3 text-sm text-ink/70">
-                          {r.email ? (
-                            <a className="underline-offset-2 hover:underline" href={`mailto:${r.email}`}>
-                              {r.email}
+                          {r.phone ? (
+                            <a
+                              className="underline-offset-2 hover:underline"
+                              href={`tel:${r.phone}`}
+                            >
+                              {r.phone}
                             </a>
                           ) : (
                             '—'
@@ -302,6 +351,12 @@ export function AdminDashboard() {
                                 ? 'Declined'
                                 : r.attending || '—'}
                           </span>
+                        </td>
+                        <td className="font-display px-4 py-3 text-lg tabular-nums">
+                          {r.maleGuests}
+                        </td>
+                        <td className="font-display px-4 py-3 text-lg tabular-nums">
+                          {r.femaleGuests}
                         </td>
                         <td className="font-display px-4 py-3 text-lg tabular-nums">{r.guests}</td>
                       </tr>

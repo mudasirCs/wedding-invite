@@ -66,7 +66,8 @@ function Countdown({ dateISO, message }: { dateISO: string; message: string }) {
 }
 
 export function InvitePage({ invite }: Props) {
-  const [guestCount, setGuestCount] = useState(1)
+  const [maleGuests, setMaleGuests] = useState(1)
+  const [femaleGuests, setFemaleGuests] = useState(0)
   const [showHint, setShowHint] = useState(true)
   const [rsvpStatus, setRsvpStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
   const [rsvpError, setRsvpError] = useState('')
@@ -88,7 +89,7 @@ export function InvitePage({ invite }: Props) {
     const form = e.currentTarget
     const fd = new FormData(form)
     const name = String(fd.get('name') || '').trim()
-    const email = String(fd.get('email') || '').trim()
+    const phone = String(fd.get('phone') || '').trim()
     const attending = String(fd.get('attend') || '')
     const endpoint = import.meta.env.VITE_RSVP_SHEET_URL as string | undefined
 
@@ -97,16 +98,31 @@ export function InvitePage({ invite }: Props) {
       setRsvpError('RSVP is not connected yet. Add VITE_RSVP_SHEET_URL to .env')
       return
     }
+    if (!phone) {
+      setRsvpStatus('error')
+      setRsvpError('Phone number is required')
+      return
+    }
+    if (attending === 'yes' && maleGuests + femaleGuests < 1) {
+      setRsvpStatus('error')
+      setRsvpError('Add at least one male or female guest')
+      return
+    }
 
     setRsvpStatus('sending')
     setRsvpError('')
 
     try {
-      // text/plain avoids a CORS preflight; Apps Script still parses JSON body
       const res = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify({ name, email, attending, guests: guestCount }),
+        body: JSON.stringify({
+          name,
+          phone,
+          attending,
+          maleGuests,
+          femaleGuests,
+        }),
       })
       const raw = await res.text()
       let data: { ok?: boolean; error?: string }
@@ -118,7 +134,8 @@ export function InvitePage({ invite }: Props) {
       if (!data.ok) throw new Error(data.error || 'RSVP failed')
       setRsvpStatus('sent')
       form.reset()
-      setGuestCount(1)
+      setMaleGuests(1)
+      setFemaleGuests(0)
     } catch (err) {
       setRsvpStatus('error')
       setRsvpError(err instanceof Error ? err.message : 'Something went wrong')
@@ -514,11 +531,13 @@ export function InvitePage({ invite }: Props) {
                   />
                 </label>
                 <label className="font-formal block text-[15px] leading-snug text-ink">
-                  <span className="block text-center">Email</span>
+                  <span className="block text-center">Phone number *</span>
                   <input
-                    name="email"
-                    type="email"
-                    autoComplete="email"
+                    name="phone"
+                    type="tel"
+                    required
+                    autoComplete="tel"
+                    inputMode="tel"
                     className="font-ui mt-2 w-full rounded-lg border border-[#d9d0c6] bg-white px-3 py-2.5 text-center text-[14px] text-ink outline-none focus:border-[#722f37]/40"
                   />
                 </label>
@@ -540,27 +559,42 @@ export function InvitePage({ invite }: Props) {
                     <span>No, I can&apos;t attend</span>
                   </label>
                 </fieldset>
-                <div className="font-formal text-[15px] text-ink">
+                <div className="font-formal space-y-4 text-[15px] text-ink">
                   <p className="text-center">Number of guests (including yourself)</p>
-                  <div className="mt-3 flex items-center justify-center gap-4">
-                    <button
-                      type="button"
-                      aria-label="Decrease guests"
-                      className="flex h-9 w-9 items-center justify-center rounded-full border border-[#d9d0c6] bg-white text-lg leading-none text-ink"
-                      onClick={() => setGuestCount((n) => Math.max(1, n - 1))}
-                    >
-                      −
-                    </button>
-                    <span className="font-display w-8 text-center text-xl tabular-nums">{guestCount}</span>
-                    <button
-                      type="button"
-                      aria-label="Increase guests"
-                      className="flex h-9 w-9 items-center justify-center rounded-full border border-[#d9d0c6] bg-white text-lg leading-none text-ink"
-                      onClick={() => setGuestCount((n) => n + 1)}
-                    >
-                      +
-                    </button>
-                  </div>
+                  {(
+                    [
+                      ['Male', maleGuests, setMaleGuests],
+                      ['Female', femaleGuests, setFemaleGuests],
+                    ] as const
+                  ).map(([label, value, setValue]) => (
+                    <div key={label}>
+                      <p className="text-center text-[14px]">{label}</p>
+                      <div className="mt-2 flex items-center justify-center gap-4">
+                        <button
+                          type="button"
+                          aria-label={`Decrease ${label.toLowerCase()} guests`}
+                          className="flex h-9 w-9 items-center justify-center rounded-full border border-[#d9d0c6] bg-white text-lg leading-none text-ink"
+                          onClick={() => setValue((n) => Math.max(0, n - 1))}
+                        >
+                          −
+                        </button>
+                        <span className="font-display w-8 text-center text-xl tabular-nums">
+                          {value}
+                        </span>
+                        <button
+                          type="button"
+                          aria-label={`Increase ${label.toLowerCase()} guests`}
+                          className="flex h-9 w-9 items-center justify-center rounded-full border border-[#d9d0c6] bg-white text-lg leading-none text-ink"
+                          onClick={() => setValue((n) => n + 1)}
+                        >
+                          +
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                  <p className="text-center font-ui text-[12px] text-ink/55">
+                    Total: {maleGuests + femaleGuests}
+                  </p>
                 </div>
                 {rsvpStatus === 'error' && (
                   <p className="font-ui text-center text-sm" style={{ color: '#722f37' }}>

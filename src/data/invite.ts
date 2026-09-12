@@ -65,14 +65,14 @@ export type InviteConfig = {
   }
 }
 
-/** Content from wooowinvites.com/invite/demo-5f7e70 — Wisteria Balcony */
+/** Real couple details — Abdul Rafi & Abida */
 export const invite: InviteConfig = {
-  envelopeMessage: 'For John and Maria',
-  partnerOne: 'gregory Gucci',
-  partnerTwo: 'anna Luca',
+  envelopeMessage: 'For Abdul Rafi and Abida',
+  partnerOne: 'abdul rafi',
+  partnerTwo: 'abida',
   subtitle: 'He asked, she said yes',
-  dateLabel: '3 MAY 2027',
-  dateISO: '2027-05-03T14:00:00',
+  dateLabel: '27 NOVEMBER 2026',
+  dateISO: '2026-11-27T14:00:00',
   textColor: '#0a0909',
   subtitleColor: '#930202',
   countdownMessage: "We can't wait for  this moment!",
@@ -87,10 +87,11 @@ export const invite: InviteConfig = {
   },
   venue: {
     title: 'The Venue',
-    name: 'Madison Square Garden',
-    address: '4 Pennsylvania Plaza, New York, NY 10001',
-    mapsUrl: 'https://maps.google.com/?q=4%20Pennsylvania%20Plaza%2C%20New%20York%2C%20NY%2010001',
-    imageUrl: '/media/venues/day1.png',
+    name: "Royal Albert's Palace",
+    address: "1050 King Georges Post Rd, Fords, NJ 08863",
+    mapsUrl:
+      'https://www.google.com/maps?gs_lcrp=EgZjaHJvbWUqBggAEEUYOzIGCAAQRRg70gEIMTM3MGowajeoAgCwAgA&um=1&ie=UTF-8&fb=1&gl=pk&sa=X&geocode=KbOaT7f8tcOJMWZk9q9bpI_e&daddr=1050+King+Georges+Post+Rd,+Fords,+NJ+08863,+United+States',
+    imageUrl: '/media/venues/royal-alberts-palace.png',
   },
   schedule: {
     heading: 'What have planned for you',
@@ -215,6 +216,6 @@ export const invite: InviteConfig = {
   rsvp: {
     heading: 'RSVP',
     subheading: "We can't wait!",
-    replyBy: 'Please reply by July 20th, 2026',
+    replyBy: 'Please reply by November 10th, 2026',
   },
 }
