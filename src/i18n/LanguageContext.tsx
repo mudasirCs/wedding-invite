@@ -12,6 +12,8 @@ import { ps } from './content/ps'
 import type { InviteCopy, Lang } from './types'
 
 const STORAGE_KEY = 'wedding-invite-lang'
+const PS_FONTS_HREF =
+  'https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;500;600;700&family=Noto+Nastaliq+Urdu:wght@400;500;600;700&family=Noto+Sans+Arabic:wght@300;400;500;600;700&display=swap'
 
 const catalogs: Record<Lang, InviteCopy> = { en, ps }
 
@@ -34,6 +36,15 @@ function readStoredLang(): Lang {
     /* ignore */
   }
   return 'en'
+}
+
+function ensurePashtoFonts() {
+  if (document.getElementById('ps-fonts')) return
+  const link = document.createElement('link')
+  link.id = 'ps-fonts'
+  link.rel = 'stylesheet'
+  link.href = PS_FONTS_HREF
+  document.head.appendChild(link)
 }
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
@@ -59,6 +70,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     root.lang = lang === 'ps' ? 'ps' : 'en'
     root.dir = lang === 'ps' ? 'rtl' : 'ltr'
     document.body.dataset.lang = lang
+    if (lang === 'ps') ensurePashtoFonts()
   }, [lang])
 
   const value = useMemo<LanguageContextValue>(

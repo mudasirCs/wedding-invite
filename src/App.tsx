@@ -27,6 +27,10 @@ export default function App() {
     const audio = audioRef.current
     if (!audio) return
     if (musicOn && phase === 'open') {
+      // Attach src only when needed — avoids downloading the track on first paint
+      if (!audio.src) {
+        audio.src = invite.media.music
+      }
       audio.volume = 0.5
       audio.play().catch(() => setMusicOn(false))
     } else {
@@ -38,6 +42,16 @@ export default function App() {
     setPhase('open')
     setMusicOn(true)
   }, [])
+
+  // Warm hero/theme posters while guest reads the sealed screen
+  useEffect(() => {
+    if (phase !== 'sealed') return
+    ;[invite.media.heroImage, invite.media.themePoster].forEach((href) => {
+      const img = new Image()
+      img.decoding = 'async'
+      img.src = href
+    })
+  }, [phase])
 
   return (
     <div className="notranslate flex min-h-[100dvh] justify-center overflow-x-hidden bg-[#f5f0e6]">
@@ -51,7 +65,8 @@ export default function App() {
           showMusic={phase === 'open' || reduced}
         />
 
-        <audio ref={audioRef} src={invite.media.music} loop preload="auto" />
+        {/* preload=none: do not fetch the track until music turns on */}
+        <audio ref={audioRef} loop preload="none" />
 
         <AnimatePresence>
           {(phase === 'sealed' || phase === 'playing') && !reduced ? (

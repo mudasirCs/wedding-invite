@@ -2,6 +2,7 @@ import { useEffect, useState, type FormEvent } from 'react'
 import { motion } from 'framer-motion'
 import type { InviteConfig } from '../data/invite'
 import { useCountdown } from '../hooks/useCountdown'
+import { useDeferredFlag } from '../hooks/useDeferredFlag'
 import { useLanguage } from '../i18n/LanguageContext'
 
 type Props = {
@@ -131,6 +132,8 @@ export function InvitePage({ invite }: Props) {
   const [showHint, setShowHint] = useState(true)
   const [rsvpStatus, setRsvpStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
   const [rsvpError, setRsvpError] = useState('')
+  // Show posters first; pull in looping videos after first paint
+  const loadLoopVideos = useDeferredFlag(350)
 
   useEffect(() => {
     const onScroll = () => {
@@ -217,15 +220,18 @@ export function InvitePage({ invite }: Props) {
           className="absolute inset-0 h-full w-full object-cover"
           aria-hidden
         />
-        <video
-          className="absolute inset-0 h-full w-full object-cover opacity-90"
-          src={invite.media.themeVideo}
-          poster={invite.media.themePoster}
-          autoPlay
-          muted
-          loop
-          playsInline
-        />
+        {loadLoopVideos ? (
+          <video
+            className="absolute inset-0 h-full w-full object-cover opacity-90"
+            src={invite.media.themeVideo}
+            poster={invite.media.themePoster}
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+          />
+        ) : null}
       </div>
 
       <ScrollHint visible={showHint} />
@@ -241,21 +247,25 @@ export function InvitePage({ invite }: Props) {
             src={invite.media.heroImage}
             alt=""
             className="absolute inset-0 h-full w-full object-cover object-center"
+            decoding="async"
+            fetchPriority="high"
             aria-hidden
           />
-          <video
-            className="absolute inset-0 h-full w-full object-cover object-center"
-            src={invite.media.heroVideo}
-            poster={invite.media.heroImage}
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="auto"
-            style={{
-              filter: 'brightness(1.14) contrast(1.02) saturate(1.05)',
-            }}
-          />
+          {loadLoopVideos ? (
+            <video
+              className="absolute inset-0 h-full w-full object-cover object-center"
+              src={invite.media.heroVideo}
+              poster={invite.media.heroImage}
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="metadata"
+              style={{
+                filter: 'brightness(1.14) contrast(1.02) saturate(1.05)',
+              }}
+            />
+          ) : null}
           <div
             className="absolute inset-0"
             style={{
@@ -377,6 +387,8 @@ export function InvitePage({ invite }: Props) {
               src={invite.venue.imageUrl}
               alt=""
               className="mx-auto block h-auto w-full max-w-none object-contain"
+              loading="lazy"
+              decoding="async"
             />
           </div>
 
@@ -478,6 +490,8 @@ export function InvitePage({ invite }: Props) {
                 src="/media/icons/icon-timeline.png"
                 alt=""
                 className="h-16 w-16 object-contain"
+                loading="lazy"
+                decoding="async"
               />
             </div>
             <h2
@@ -515,6 +529,8 @@ export function InvitePage({ invite }: Props) {
                       src={item.icon}
                       alt=""
                       className="mb-2 h-16 w-16 object-contain sm:h-20 sm:w-20"
+                      loading="lazy"
+                      decoding="async"
                     />
                     <p
                       className={`font-formal font-semibold text-black ${
@@ -583,6 +599,8 @@ export function InvitePage({ invite }: Props) {
               src={invite.dressCode.imageUrl}
               alt=""
               className="mx-auto w-full object-contain"
+              loading="lazy"
+              decoding="async"
             />
             <p className={`font-script mt-3 text-wine ${isRtl ? 'invite-subtitle' : 'text-2xl'}`}>
               {t.dressDetail}
@@ -715,6 +733,8 @@ export function InvitePage({ invite }: Props) {
               src="/media/menu-frame.png"
               alt=""
               className="pointer-events-none relative z-0 mt-2 w-full select-none object-contain"
+              loading="lazy"
+              decoding="async"
             />
           </div>
         </section>
@@ -746,6 +766,8 @@ export function InvitePage({ invite }: Props) {
               src="/media/gallery-frame.png"
               alt=""
               className="pointer-events-none absolute inset-0 z-10 h-full w-full object-contain"
+              loading="lazy"
+              decoding="async"
             />
             {invite.gallery.images.map((src) => (
               <img
@@ -753,6 +775,8 @@ export function InvitePage({ invite }: Props) {
                 src={src}
                 alt=""
                 className="aspect-[3/4] w-full rounded-[46%] object-cover px-[12%] py-[10%]"
+                loading="lazy"
+                decoding="async"
               />
             ))}
           </div>
@@ -815,6 +839,8 @@ export function InvitePage({ invite }: Props) {
                     src={meta?.imageUrl}
                     alt={h.name}
                     className="mx-auto max-h-48 w-auto max-w-[min(100%,220px)] object-contain"
+                    loading="lazy"
+                    decoding="async"
                   />
                   <h3
                     className={`font-script mt-3 text-wine ${isRtl ? 'invite-subtitle' : 'text-3xl'}`}
@@ -855,17 +881,21 @@ export function InvitePage({ invite }: Props) {
           <div className="relative mx-auto w-full max-w-md space-y-6 overflow-visible rounded-xl border border-[#e2dacf] bg-[#f8f5f2] p-5 sm:p-8">
             {/* Demo florals: top-right + bottom-left */}
             <img
-              src="/media/rsvp-floral-corner.png"
+              src="/media/rsvp-floral-corner.jpg"
               alt=""
               aria-hidden
               className="pointer-events-none absolute -top-10 -right-6 z-[1] w-40 select-none"
+              loading="lazy"
+              decoding="async"
             />
             <img
-              src="/media/rsvp-floral-corner.png"
+              src="/media/rsvp-floral-corner.jpg"
               alt=""
               aria-hidden
               className="pointer-events-none absolute -bottom-10 -left-6 z-[1] w-40 select-none"
               style={{ transform: 'scale(-1, -1)' }}
+              loading="lazy"
+              decoding="async"
             />
 
             <div className="relative z-20 space-y-6">
@@ -910,14 +940,19 @@ export function InvitePage({ invite }: Props) {
                   {t.rsvpThanks}
                 </p>
               ) : (
-                <form className="w-full space-y-5 text-start" onSubmit={submitRsvp}>
+                <form
+                  className={`w-full space-y-5 ${isRtl ? 'text-center' : 'text-start'}`}
+                  onSubmit={submitRsvp}
+                >
                   <label className="font-formal block text-sm font-normal text-[#562931]">
                     <span className={`mb-2 block ${isRtl ? 'invite-caption' : ''}`}>{t.fullName}</span>
                     <input
                       name="name"
                       required
                       autoComplete="name"
-                      className="font-formal mt-1 h-10 w-full rounded-md border border-[#e2dacf] bg-[#f8f5f2] px-3 py-2 text-base text-[#562931] outline-none ring-offset-[#f8f5f2] transition focus-visible:ring-2 focus-visible:ring-[#831843]/25 focus-visible:ring-offset-2"
+                      className={`font-formal mt-1 h-10 w-full rounded-md border border-[#e2dacf] bg-[#f8f5f2] px-3 py-2 text-base text-[#562931] outline-none ring-offset-[#f8f5f2] transition focus-visible:ring-2 focus-visible:ring-[#831843]/25 focus-visible:ring-offset-2 ${
+                        isRtl ? 'text-center' : 'text-start'
+                      }`}
                     />
                   </label>
 
@@ -932,36 +967,46 @@ export function InvitePage({ invite }: Props) {
                       autoComplete="tel"
                       inputMode="tel"
                       dir="ltr"
-                      className="font-formal mt-1 h-10 w-full rounded-md border border-[#e2dacf] bg-[#f8f5f2] px-3 py-2 text-base text-[#562931] outline-none ring-offset-[#f8f5f2] transition focus-visible:ring-2 focus-visible:ring-[#831843]/25 focus-visible:ring-offset-2"
+                      className={`font-formal mt-1 h-10 w-full rounded-md border border-[#e2dacf] bg-[#f8f5f2] px-3 py-2 text-base text-[#562931] outline-none ring-offset-[#f8f5f2] transition focus-visible:ring-2 focus-visible:ring-[#831843]/25 focus-visible:ring-offset-2 ${
+                        isRtl ? 'text-center' : 'text-start'
+                      }`}
                     />
                   </label>
 
                   <fieldset className="font-formal text-sm font-normal text-[#562931]">
                     <legend
-                      className={`mb-3 block w-full text-start ${isRtl ? 'invite-caption' : ''}`}
+                      className={`mb-3 block w-full ${
+                        isRtl ? 'invite-caption text-center' : 'text-start'
+                      }`}
                     >
                       {t.willAttend}
                     </legend>
-                    <label className="mt-1 flex cursor-pointer items-center gap-2.5 leading-none">
-                      <input
-                        type="radio"
-                        name="attend"
-                        value="yes"
-                        required
-                        defaultChecked
-                        className="h-4 w-4 accent-[#562931]"
-                      />
-                      <span className={isRtl ? 'invite-caption' : ''}>{t.attendYes}</span>
-                    </label>
-                    <label className="mt-3 flex cursor-pointer items-center gap-2.5 leading-none">
-                      <input
-                        type="radio"
-                        name="attend"
-                        value="no"
-                        className="h-4 w-4 accent-[#562931]"
-                      />
-                      <span className={isRtl ? 'invite-caption' : ''}>{t.attendNo}</span>
-                    </label>
+                    <div
+                      className={
+                        isRtl ? 'mx-auto flex w-max max-w-full flex-col items-start gap-3' : undefined
+                      }
+                    >
+                      <label className="mt-1 flex cursor-pointer items-center gap-2.5 leading-none">
+                        <input
+                          type="radio"
+                          name="attend"
+                          value="yes"
+                          required
+                          defaultChecked
+                          className="h-4 w-4 shrink-0 accent-[#562931]"
+                        />
+                        <span className={isRtl ? 'invite-caption' : ''}>{t.attendYes}</span>
+                      </label>
+                      <label className="flex cursor-pointer items-center gap-2.5 leading-none">
+                        <input
+                          type="radio"
+                          name="attend"
+                          value="no"
+                          className="h-4 w-4 shrink-0 accent-[#562931]"
+                        />
+                        <span className={isRtl ? 'invite-caption' : ''}>{t.attendNo}</span>
+                      </label>
+                    </div>
                   </fieldset>
 
                   <div className="space-y-4 border-t border-[#e2dacf] pt-4">
@@ -986,8 +1031,13 @@ export function InvitePage({ invite }: Props) {
                         >
                           {label}
                         </p>
-                        {/* Demo connected stepper */}
-                        <div className="flex w-fit items-center overflow-hidden rounded-md border border-[#e2dacf]">
+                        {/* Keep − / count / + in LTR order; center in Pashto */}
+                        <div
+                          dir="ltr"
+                          className={`flex w-fit items-center overflow-hidden rounded-md border border-[#e2dacf] ${
+                            isRtl ? 'mx-auto' : ''
+                          }`}
+                        >
                           <button
                             type="button"
                             aria-label={`${label} −`}
@@ -997,10 +1047,7 @@ export function InvitePage({ invite }: Props) {
                           >
                             −
                           </button>
-                          <span
-                            className="min-w-[3rem] bg-[#f8f5f2] px-4 py-2 text-center font-formal text-sm font-medium text-[#562931]"
-                            dir="ltr"
-                          >
+                          <span className="min-w-[3rem] bg-[#f8f5f2] px-4 py-2 text-center font-formal text-sm font-medium text-[#562931]">
                             {value}
                           </span>
                           <button

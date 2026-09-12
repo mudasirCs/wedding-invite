@@ -65,11 +65,11 @@ export type InviteConfig = {
   }
 }
 
-/** Real couple details — Abdul Rafi & Abida */
+/** Real couple details — Abdul Rafi & Abeda Afzely */
 export const invite: InviteConfig = {
-  envelopeMessage: 'For Abdul Rafi and Abida',
+  envelopeMessage: 'For Abdul Rafi and Abeda Afzely',
   partnerOne: 'Abdul Rafi',
-  partnerTwo: 'Abida',
+  partnerTwo: 'Abeda Afzely',
   subtitle: 'He asked, she said yes',
   dateLabel: '27 NOVEMBER 2026',
   dateISO: '2026-11-27T14:00:00',
@@ -91,7 +91,7 @@ export const invite: InviteConfig = {
     address: "1050 King Georges Post Rd, Fords, NJ 08863",
     mapsUrl:
       'https://www.google.com/maps?gs_lcrp=EgZjaHJvbWUqBggAEEUYOzIGCAAQRRg70gEIMTM3MGowajeoAgCwAgA&um=1&ie=UTF-8&fb=1&gl=pk&sa=X&geocode=KbOaT7f8tcOJMWZk9q9bpI_e&daddr=1050+King+Georges+Post+Rd,+Fords,+NJ+08863,+United+States',
-    imageUrl: '/media/venues/royal-alberts-palace.png',
+    imageUrl: '/media/venues/royal-alberts-palace.jpg',
   },
   schedule: {
     heading: 'What have planned for you',

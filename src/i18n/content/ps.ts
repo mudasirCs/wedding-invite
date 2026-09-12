@@ -2,9 +2,9 @@ import type { InviteCopy } from '../types'
 
 /** ساده کندهاري پښتو — اسانه لوستل */
 export const ps: InviteCopy = {
-  envelopeMessage: 'عبدالرافع او عابدې ته',
+  envelopeMessage: 'عبدالرافع او عبیدې افضلي ته',
   partnerOne: 'عبدالرافع',
-  partnerTwo: 'عابده',
+  partnerTwo: 'عبیده افضلی',
   and: 'او',
   subtitle: 'هغه یې وپوښتله، هغې هو وویل',
   dateLabel: '۲۷ نومبر ۲۰۲۶',

@@ -1,9 +1,9 @@
 import type { InviteCopy } from '../types'
 
 export const en: InviteCopy = {
-  envelopeMessage: 'For Abdul Rafi and Abida',
+  envelopeMessage: 'For Abdul Rafi and Abeda Afzely',
   partnerOne: 'Abdul Rafi',
-  partnerTwo: 'Abida',
+  partnerTwo: 'Abeda Afzely',
   and: '&',
   subtitle: 'He asked, she said yes',
   dateLabel: '27 NOVEMBER 2026',

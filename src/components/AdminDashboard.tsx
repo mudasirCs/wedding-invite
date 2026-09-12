@@ -177,7 +177,7 @@ export function AdminDashboard() {
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-4 sm:px-6">
           <div>
             <p className="font-ui text-[11px] tracking-[0.2em] text-muted uppercase">
-              Abdul Rafi & Abida
+              Abdul Rafi & Abeda Afzely
             </p>
             <h1 className="font-display text-2xl text-wine sm:text-3xl">RSVP dashboard</h1>
           </div>
