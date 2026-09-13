@@ -2,6 +2,8 @@ export type Lang = 'en' | 'ps'
 
 export type InviteCopy = {
   envelopeMessage: string
+  /** Four centered lines above the sealed ribbon */
+  envelopeLines: [string, string, string, string]
   partnerOne: string
   partnerTwo: string
   and: string

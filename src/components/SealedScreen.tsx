@@ -75,19 +75,46 @@ export function SealedScreen({ videoSrc, poster, playing, onTap, onPlayEnd }: Pr
 
       {!playing ? (
         <div className="pointer-events-none absolute inset-0 z-30">
-          <p
-            className="absolute inset-x-6 text-center font-script"
+          {/* Three-line dedication, centered in the sky above the ribbon */}
+          <div
+            className="absolute inset-x-0 flex flex-col items-center justify-center text-center"
             style={{
-              top: '54%',
-              fontSize: isRtl ? 26 : 28,
-              color: '#6b1f2a',
-              textShadow: '0 1px 0 rgba(255,255,255,0.35)',
-              lineHeight: isRtl ? 2 : 1.25,
-              paddingInline: isRtl ? 4 : 0,
+              top: isRtl ? '32%' : '33%',
+              transform: 'translateY(-50%)',
+              paddingInline: '1.75rem',
             }}
           >
-            {t.envelopeMessage}
-          </p>
+            {t.envelopeLines.map((line, i) => {
+              const isName = i === 1 || i === 3
+              return (
+                <p
+                  key={`${line}-${i}`}
+                  className={`${isName ? 'font-headline' : 'font-script'} m-0 w-full max-w-[18rem] text-center`}
+                  style={{
+                    fontSize: isRtl
+                      ? isName
+                        ? 30
+                        : 22
+                      : isName
+                        ? 36
+                        : 26,
+                    lineHeight: isRtl ? 1.7 : 1.1,
+                    color: '#6b1f2a',
+                    textShadow:
+                      '0 1px 0 rgba(255,255,255,0.45), 0.3px 0 currentColor, -0.3px 0 currentColor',
+                    marginTop: i === 0 ? 0 : isRtl ? 2 : 3,
+                    fontWeight: isName ? 550 : 450,
+                    fontFeatureSettings: 'normal',
+                    fontVariationSettings: 'normal',
+                    textTransform: 'none',
+                    WebkitTextStroke: isName ? '0.3px #6b1f2a' : '0.18px #6b1f2a',
+                  }}
+                >
+                  {line}
+                </p>
+              )
+            })}
+          </div>
           <p
             className="absolute inset-x-0 text-center font-script"
             style={{

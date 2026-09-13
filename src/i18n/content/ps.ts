@@ -3,6 +3,7 @@ import type { InviteCopy } from '../types'
 /** ساده کندهاري پښتو — اسانه لوستل */
 export const ps: InviteCopy = {
   envelopeMessage: 'عبدالرافع او عبیدې افضلي ته',
+  envelopeLines: ['د', 'عبدالرافع', 'او', 'عبیده افضلی'],
   partnerOne: 'عبدالرافع',
   partnerTwo: 'عبیده افضلی',
   and: 'او',

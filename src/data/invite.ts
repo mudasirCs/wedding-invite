@@ -67,7 +67,7 @@ export type InviteConfig = {
 
 /** Real couple details — Abdul Rafi & Abeda Afzely */
 export const invite: InviteConfig = {
-  envelopeMessage: 'For Abdul Rafi and Abeda Afzely',
+  envelopeMessage: 'For Abdul Rafi And Abeda Afzely',
   partnerOne: 'Abdul Rafi',
   partnerTwo: 'Abeda Afzely',
   subtitle: 'He asked, she said yes',
@@ -106,13 +106,13 @@ export const invite: InviteConfig = {
         time: '15:00',
         title: 'LUNCH',
         description: 'Surprise lunch',
-        icon: '/media/timeline-cocktail.png',
+        icon: '/media/timeline-drink.webp',
       },
       {
         time: '17:00',
         title: 'PARTY',
         description: 'Let yourself go',
-        icon: '/media/timeline-champagne.png',
+        icon: '/media/timeline-lunch.webp',
       },
       {
         time: '02:00',
