@@ -49,7 +49,9 @@ export type InviteCopy = {
   rsvpReplyBy: string
   rsvpThanks: string
   fullName: string
+  fullNamePlaceholder: string
   phoneNumber: string
+  phonePlaceholder: string
   willAttend: string
   attendYes: string
   attendNo: string

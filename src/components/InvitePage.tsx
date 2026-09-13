@@ -4,6 +4,7 @@ import type { InviteConfig } from '../data/invite'
 import { useCountdown } from '../hooks/useCountdown'
 import { useDeferredFlag } from '../hooks/useDeferredFlag'
 import { useLanguage } from '../i18n/LanguageContext'
+import { Reveal, RevealImg, RevealSection } from './Reveal'
 
 type Props = {
   invite: InviteConfig
@@ -50,7 +51,7 @@ function Countdown({ dateISO }: { dateISO: string }) {
     { label: t.seconds, value: seconds },
   ]
   return (
-    <section className={`px-4 text-center ${isRtl ? 'invite-section py-16' : 'py-14'}`}>
+    <RevealSection className={`px-4 text-center ${isRtl ? 'invite-section py-16' : 'py-14'}`}>
       <h2
         className={`font-normal text-black ${
           isRtl
@@ -80,8 +81,13 @@ function Countdown({ dateISO }: { dateISO: string }) {
         <div
           className={`mx-auto flex w-full max-w-[min(100%,22rem)] justify-center ${isRtl ? 'gap-2' : 'gap-3'}`}
         >
-          {cells.map((c) => (
-            <div key={c.label} className="flex min-w-0 flex-1 flex-col items-center">
+          {cells.map((c, i) => (
+            <Reveal
+              key={c.label}
+              className="flex min-w-0 flex-1 flex-col items-center"
+              delay={i * 0.07}
+              from="scale"
+            >
               <div
                 className="flex aspect-square w-full max-w-[4.5rem] items-center justify-center overflow-hidden rounded-lg border"
                 style={{
@@ -117,11 +123,11 @@ function Countdown({ dateISO }: { dateISO: string }) {
               >
                 {c.label}
               </span>
-            </div>
+            </Reveal>
           ))}
         </div>
       )}
-    </section>
+    </RevealSection>
   )
 }
 
@@ -366,7 +372,7 @@ export function InvitePage({ invite }: Props) {
 
         <Countdown dateISO={invite.dateISO} />
 
-        <section className={`text-center ${isRtl ? 'invite-section px-0' : 'py-16 px-0'}`}>
+        <RevealSection className={`text-center ${isRtl ? 'invite-section px-0' : 'py-16 px-0'}`}>
           <div className="mb-4 px-4 text-center">
             <h2
               className={`font-headline font-normal leading-tight text-[#831843] ${
@@ -382,13 +388,23 @@ export function InvitePage({ invite }: Props) {
             </h2>
           </div>
 
-          <div className="relative z-0 mt-0 -mb-2 w-full">
-            <img
+          <div className="relative z-0 mt-0 w-full space-y-3">
+            <RevealImg
               src={invite.venue.imageUrl}
               alt=""
-              className="mx-auto block h-auto w-full max-w-none object-contain"
+              className="mx-auto block h-auto w-[min(100%,22rem)] object-contain px-4 sm:w-[min(100%,26rem)]"
               loading="lazy"
               decoding="async"
+              from="scale"
+            />
+            <RevealImg
+              src="/media/venues/royal-alberts-palace-v2.webp"
+              alt="Royal Albert's Palace — alternate view"
+              className="mx-auto block h-auto w-[min(100%,22rem)] object-contain px-4 sm:w-[min(100%,26rem)]"
+              loading="lazy"
+              decoding="async"
+              from="scale"
+              delay={0.12}
             />
           </div>
 
@@ -475,9 +491,9 @@ export function InvitePage({ invite }: Props) {
               </span>
             </a>
           </div>
-        </section>
+        </RevealSection>
 
-        <section className={`relative z-30 px-4 ${isRtl ? 'invite-section' : 'py-16'}`}>
+        <RevealSection className={`relative z-30 px-4 ${isRtl ? 'invite-section' : 'py-16'}`}>
           <div className="mb-12 flex items-center justify-center gap-4">
             <div className="h-px w-16 bg-[#e2dacf]" />
             <div className="h-1.5 w-1.5 rounded-full bg-[#8a5c63]/40" />
@@ -486,12 +502,13 @@ export function InvitePage({ invite }: Props) {
 
           <div className={`text-center ${isRtl ? 'mb-14' : 'mb-12'}`}>
             <div className="mx-auto mb-4 flex items-center justify-center">
-              <img
+              <RevealImg
                 src="/media/icons/icon-timeline.png"
                 alt=""
                 className="h-16 w-16 object-contain"
                 loading="lazy"
                 decoding="async"
+                from="scale"
               />
             </div>
             <h2
@@ -525,12 +542,13 @@ export function InvitePage({ invite }: Props) {
                           : 'items-start pl-6 text-left'
                     }`}
                   >
-                    <img
+                    <RevealImg
                       src={item.icon}
                       alt=""
                       className="mb-2 h-16 w-16 object-contain sm:h-20 sm:w-20"
                       loading="lazy"
                       decoding="async"
+                      from="scale"
                     />
                     <p
                       className={`font-formal font-semibold text-black ${
@@ -563,8 +581,10 @@ export function InvitePage({ invite }: Props) {
                 )
 
                 return (
-                  <div
+                  <Reveal
                     key={`${item.time}-${item.title}`}
+                    from={onLeft ? 'left' : 'right'}
+                    delay={i * 0.06}
                     className={`relative grid grid-cols-2 ${isRtl ? 'items-start' : 'items-center'}`}
                   >
                     <div
@@ -585,22 +605,23 @@ export function InvitePage({ invite }: Props) {
                         {content}
                       </>
                     )}
-                  </div>
+                  </Reveal>
                 )
               })}
             </div>
           </div>
-        </section>
+        </RevealSection>
 
-        <section className={`px-4 text-center sm:px-6 ${isRtl ? 'invite-section' : 'py-12'}`}>
+        <RevealSection className={`px-4 text-center sm:px-6 ${isRtl ? 'invite-section' : 'py-12'}`}>
           <h2 className="font-script invite-title text-[2.5rem] text-wine">{t.dressCode}</h2>
           <div className="mx-auto mt-5 w-full max-w-sm rounded-3xl bg-white/50 p-5 backdrop-blur-md">
-            <img
+            <RevealImg
               src={invite.dressCode.imageUrl}
               alt=""
               className="mx-auto w-full object-contain"
               loading="lazy"
               decoding="async"
+              from="scale"
             />
             <p className={`font-script mt-3 text-wine ${isRtl ? 'invite-subtitle' : 'text-2xl'}`}>
               {t.dressDetail}
@@ -626,13 +647,14 @@ export function InvitePage({ invite }: Props) {
               ))}
             </div>
           </div>
-        </section>
+        </RevealSection>
 
-        <section className={`px-4 text-center sm:px-6 md:px-8 ${isRtl ? 'invite-section' : 'py-12'}`}>
-          <img
+        <RevealSection className={`px-4 text-center sm:px-6 md:px-8 ${isRtl ? 'invite-section' : 'py-12'}`}>
+          <RevealImg
             src="/media/icons/icon-giftlist.png"
             alt=""
             className="mx-auto mb-3 h-14 w-14 object-contain"
+            from="scale"
           />
           <h2 className="font-script invite-title text-[2.6rem] text-wine">{t.giftsTitle}</h2>
           <p
@@ -660,9 +682,9 @@ export function InvitePage({ invite }: Props) {
           <p className={`font-script text-wine ${isRtl ? 'invite-subtitle mt-1' : 'text-xl'}`}>
             {t.bankName}
           </p>
-        </section>
+        </RevealSection>
 
-        <section className={`relative z-10 px-4 text-center sm:px-6 ${isRtl ? 'invite-section' : 'py-16'}`}>
+        <RevealSection className={`relative z-10 px-4 text-center sm:px-6 ${isRtl ? 'invite-section' : 'py-16'}`}>
           <div className={`relative z-10 mx-auto w-full max-w-md ${isRtl ? 'space-y-8' : 'space-y-6'}`}>
             <h2
               className={`font-headline text-center font-normal italic text-[#831843] ${
@@ -683,8 +705,8 @@ export function InvitePage({ invite }: Props) {
             </h2>
 
             <div className={isRtl ? 'space-y-8' : 'space-y-6'}>
-              {t.menu.map((cat) => (
-                <div key={cat.title}>
+              {t.menu.map((cat, catIdx) => (
+                <Reveal key={cat.title} delay={catIdx * 0.08} from="up">
                   <h3
                     className={`mb-1 text-center font-headline font-semibold text-[#831843] ${
                       isRtl ? 'invite-subtitle' : 'text-base'
@@ -722,24 +744,26 @@ export function InvitePage({ invite }: Props) {
                       </div>
                     ))}
                   </div>
-                </div>
+                </Reveal>
               ))}
             </div>
           </div>
 
           {/* Demo: blue table line-art under menu */}
           <div className="relative mx-auto mt-2 w-full max-w-md">
-            <img
+            <RevealImg
               src="/media/menu-frame.png"
               alt=""
               className="pointer-events-none relative z-0 mt-2 w-full select-none object-contain"
               loading="lazy"
               decoding="async"
+              from="fade"
+              delay={0.1}
             />
           </div>
-        </section>
+        </RevealSection>
 
-        <section className={`px-4 text-center sm:px-6 md:px-8 ${isRtl ? 'invite-section' : 'py-12'}`}>
+        <RevealSection className={`px-4 text-center sm:px-6 md:px-8 ${isRtl ? 'invite-section' : 'py-12'}`}>
           <h2 className="font-script invite-title-sm text-[2.3rem] text-wine">
             {t.textBlockTitle}
           </h2>
@@ -750,9 +774,9 @@ export function InvitePage({ invite }: Props) {
           >
             {t.textBlockBody}
           </p>
-        </section>
+        </RevealSection>
 
-        <section className={`px-4 text-center sm:px-6 md:px-8 ${isRtl ? 'invite-section' : 'py-12'}`}>
+        <RevealSection className={`px-4 text-center sm:px-6 md:px-8 ${isRtl ? 'invite-section' : 'py-12'}`}>
           <h2 className="font-script invite-title text-[2.5rem] text-wine">{t.galleryTitle}</h2>
           <p
             className={`mt-2 font-display text-ink/55 ${
@@ -761,7 +785,7 @@ export function InvitePage({ invite }: Props) {
           >
             {t.gallerySubtitle}
           </p>
-          <div className="relative mx-auto mt-8 w-full max-w-[250px]">
+          <Reveal from="scale" className="relative mx-auto mt-8 w-full max-w-[250px]">
             <img
               src="/media/gallery-frame.png"
               alt=""
@@ -779,14 +803,15 @@ export function InvitePage({ invite }: Props) {
                 decoding="async"
               />
             ))}
-          </div>
-        </section>
+          </Reveal>
+        </RevealSection>
 
-        <section className={`px-4 sm:px-6 md:px-8 ${isRtl ? 'invite-section' : 'py-12'}`}>
-          <img
+        <RevealSection className={`px-4 sm:px-6 md:px-8 ${isRtl ? 'invite-section' : 'py-12'}`}>
+          <RevealImg
             src="/media/icons/icon-faq.png"
             alt=""
             className="mx-auto mb-3 h-14 w-14 object-contain"
+            from="scale"
           />
           <h2 className="font-script invite-title mb-6 text-center text-[2.6rem] text-wine">
             {t.faqTitle}
@@ -814,13 +839,14 @@ export function InvitePage({ invite }: Props) {
               </details>
             ))}
           </div>
-        </section>
+        </RevealSection>
 
-        <section className={`px-4 text-center sm:px-6 md:px-8 ${isRtl ? 'invite-section' : 'py-12'}`}>
-          <img
+        <RevealSection className={`px-4 text-center sm:px-6 md:px-8 ${isRtl ? 'invite-section' : 'py-12'}`}>
+          <RevealImg
             src="/media/icons/icon-accommodation.png"
             alt=""
             className="mx-auto mb-3 h-14 w-14 object-contain"
+            from="scale"
           />
           <h2 className="font-script invite-title text-[2.6rem] text-wine">
             {t.accommodationHeading}
@@ -834,13 +860,14 @@ export function InvitePage({ invite }: Props) {
             {t.hotels.map((h, i) => {
               const meta = invite.accommodation.hotels[i]
               return (
-                <div key={h.name} className="text-center">
-                  <img
+                <Reveal key={h.name} className="text-center" delay={i * 0.1} from="up">
+                  <RevealImg
                     src={meta?.imageUrl}
                     alt={h.name}
                     className="mx-auto max-h-48 w-auto max-w-[min(100%,220px)] object-contain"
                     loading="lazy"
                     decoding="async"
+                    from="scale"
                   />
                   <h3
                     className={`font-script mt-3 text-wine ${isRtl ? 'invite-subtitle' : 'text-3xl'}`}
@@ -867,36 +894,44 @@ export function InvitePage({ invite }: Props) {
                       ↗ {t.viewDetails}
                     </a>
                   </p>
-                </div>
+                </Reveal>
               )
             })}
           </div>
-        </section>
+        </RevealSection>
 
-        <section
+        <RevealSection
           id="rsvp"
           className={`relative overflow-visible px-3 sm:px-4 ${isRtl ? 'pb-32 pt-8' : 'py-16'}`}
         >
           {/* Demo card: rounded-xl + border-border + p-6/8 + space-y-6 */}
           <div className="relative mx-auto w-full max-w-md space-y-6 overflow-visible rounded-xl border border-[#e2dacf] bg-[#f8f5f2] p-5 sm:p-8">
             {/* Demo florals: top-right + bottom-left */}
-            <img
+            <RevealImg
               src="/media/rsvp-floral-corner.webp"
               alt=""
               aria-hidden
               className="pointer-events-none absolute -top-10 -right-6 z-[1] w-40 select-none"
               loading="lazy"
               decoding="async"
+              from="fade"
+              delay={0.15}
             />
-            <img
-              src="/media/rsvp-floral-corner.webp"
-              alt=""
-              aria-hidden
-              className="pointer-events-none absolute -bottom-10 -left-6 z-[1] w-40 select-none"
-              style={{ transform: 'scale(-1, -1)' }}
-              loading="lazy"
-              decoding="async"
-            />
+            <Reveal
+              from="fade"
+              delay={0.25}
+              className="pointer-events-none absolute -bottom-10 -left-6 z-[1] w-40"
+            >
+              <img
+                src="/media/rsvp-floral-corner.webp"
+                alt=""
+                aria-hidden
+                className="w-full select-none"
+                style={{ transform: 'scale(-1, -1)' }}
+                loading="lazy"
+                decoding="async"
+              />
+            </Reveal>
 
             <div className="relative z-20 space-y-6">
               <div className="text-center">
@@ -950,7 +985,8 @@ export function InvitePage({ invite }: Props) {
                       name="name"
                       required
                       autoComplete="name"
-                      className={`font-formal mt-1 h-10 w-full rounded-md border border-[#e2dacf] bg-[#f8f5f2] px-3 py-2 text-base text-[#562931] outline-none ring-offset-[#f8f5f2] transition focus-visible:ring-2 focus-visible:ring-[#831843]/25 focus-visible:ring-offset-2 ${
+                      placeholder={t.fullNamePlaceholder}
+                      className={`font-formal mt-1 h-10 w-full rounded-md border border-[#e2dacf] bg-[#f8f5f2] px-3 py-2 text-base text-[#562931] outline-none ring-offset-[#f8f5f2] transition placeholder:text-[#562931]/40 focus-visible:ring-2 focus-visible:ring-[#831843]/25 focus-visible:ring-offset-2 ${
                         isRtl ? 'text-center' : 'text-start'
                       }`}
                     />
@@ -967,7 +1003,8 @@ export function InvitePage({ invite }: Props) {
                       autoComplete="tel"
                       inputMode="tel"
                       dir="ltr"
-                      className={`font-formal mt-1 h-10 w-full rounded-md border border-[#e2dacf] bg-[#f8f5f2] px-3 py-2 text-base text-[#562931] outline-none ring-offset-[#f8f5f2] transition focus-visible:ring-2 focus-visible:ring-[#831843]/25 focus-visible:ring-offset-2 ${
+                      placeholder={t.phonePlaceholder}
+                      className={`font-formal mt-1 h-10 w-full rounded-md border border-[#e2dacf] bg-[#f8f5f2] px-3 py-2 text-base text-[#562931] outline-none ring-offset-[#f8f5f2] transition placeholder:text-[#562931]/40 focus-visible:ring-2 focus-visible:ring-[#831843]/25 focus-visible:ring-offset-2 ${
                         isRtl ? 'text-center' : 'text-start'
                       }`}
                     />
@@ -975,41 +1012,41 @@ export function InvitePage({ invite }: Props) {
 
                   <fieldset className="font-formal text-sm font-normal text-[#562931]">
                     <legend
-                      className={`mb-3 block w-full ${
+                      className={`mb-4 block w-full ${
                         isRtl ? 'invite-caption text-center' : 'text-start'
                       }`}
                     >
                       {t.willAttend}
                     </legend>
                     <div
-                      className={
-                        isRtl ? 'mx-auto flex w-max max-w-full flex-col items-start gap-3' : undefined
-                      }
+                      className={`flex flex-col gap-4 ${
+                        isRtl ? 'mx-auto w-max max-w-full items-start' : 'items-start'
+                      }`}
                     >
-                      <label className="mt-1 flex cursor-pointer items-center gap-2.5 leading-none">
+                      <label className="flex cursor-pointer items-center gap-3 leading-snug">
                         <input
                           type="radio"
                           name="attend"
                           value="yes"
                           required
                           defaultChecked
-                          className="h-4 w-4 shrink-0 accent-[#562931]"
+                          className="h-[1.05rem] w-[1.05rem] shrink-0 accent-[#562931]"
                         />
                         <span className={isRtl ? 'invite-caption' : ''}>{t.attendYes}</span>
                       </label>
-                      <label className="flex cursor-pointer items-center gap-2.5 leading-none">
+                      <label className="flex cursor-pointer items-center gap-3 leading-snug">
                         <input
                           type="radio"
                           name="attend"
                           value="no"
-                          className="h-4 w-4 shrink-0 accent-[#562931]"
+                          className="h-[1.05rem] w-[1.05rem] shrink-0 accent-[#562931]"
                         />
                         <span className={isRtl ? 'invite-caption' : ''}>{t.attendNo}</span>
                       </label>
                     </div>
                   </fieldset>
 
-                  <div className="space-y-4 border-t border-[#e2dacf] pt-4">
+                  <div className="space-y-5 border-t border-[#e2dacf] pt-5 text-center">
                     <p
                       className={`font-formal text-sm font-normal text-[#562931] ${
                         isRtl ? 'invite-caption' : ''
@@ -1023,7 +1060,7 @@ export function InvitePage({ invite }: Props) {
                         [t.female, femaleGuests, setFemaleGuests],
                       ] as const
                     ).map(([label, value, setValue]) => (
-                      <div key={label} className="space-y-2">
+                      <div key={label} className="flex flex-col items-center gap-2.5">
                         <p
                           className={`font-formal text-sm text-[#562931] ${
                             isRtl ? 'invite-caption' : ''
@@ -1031,17 +1068,14 @@ export function InvitePage({ invite }: Props) {
                         >
                           {label}
                         </p>
-                        {/* Keep − / count / + in LTR order; center in Pashto */}
                         <div
                           dir="ltr"
-                          className={`flex w-fit items-center overflow-hidden rounded-md border border-[#e2dacf] ${
-                            isRtl ? 'mx-auto' : ''
-                          }`}
+                          className="mx-auto flex w-fit items-center overflow-hidden rounded-md border border-[#e2dacf]"
                         >
                           <button
                             type="button"
                             aria-label={`${label} −`}
-                            className="bg-[#f8f5f2] px-3 py-2 text-lg font-medium text-[#562931] transition-colors hover:bg-[#efeae4] disabled:opacity-30"
+                            className="bg-[#f8f5f2] px-3.5 py-2 text-lg font-medium text-[#562931] transition-colors hover:bg-[#efeae4] disabled:opacity-30"
                             disabled={value <= 0}
                             onClick={() => setValue((n) => Math.max(0, n - 1))}
                           >
@@ -1053,7 +1087,7 @@ export function InvitePage({ invite }: Props) {
                           <button
                             type="button"
                             aria-label={`${label} +`}
-                            className="bg-[#f8f5f2] px-3 py-2 text-lg font-medium text-[#562931] transition-colors hover:bg-[#efeae4]"
+                            className="bg-[#f8f5f2] px-3.5 py-2 text-lg font-medium text-[#562931] transition-colors hover:bg-[#efeae4]"
                             onClick={() => setValue((n) => n + 1)}
                           >
                             +
@@ -1061,7 +1095,11 @@ export function InvitePage({ invite }: Props) {
                         </div>
                       </div>
                     ))}
-                    <p className="font-formal text-xs text-[#562931]/55">
+                    <p
+                      className={`font-formal text-xs text-[#562931]/60 ${
+                        isRtl ? 'invite-caption' : ''
+                      }`}
+                    >
                       {t.total}: <span dir="ltr">{maleGuests + femaleGuests}</span>
                     </p>
                   </div>
@@ -1084,7 +1122,7 @@ export function InvitePage({ invite }: Props) {
               )}
             </div>
           </div>
-        </section>
+        </RevealSection>
       </div>
     </div>
   )
