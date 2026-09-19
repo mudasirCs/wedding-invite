@@ -46,28 +46,28 @@ body.lock-scroll {
   height: 100dvh;
 }
 
-/* Pashto: Nastaliq for display/script, Naskh for UI */
+/* Pashto: Amiri for elegant names, Naskh for readable body/labels */
 html[lang='ps'] {
-  --font-display: 'Noto Nastaliq Urdu', 'Noto Naskh Arabic', serif;
-  --font-headline: 'Noto Nastaliq Urdu', 'Noto Naskh Arabic', serif;
-  --font-script: 'Noto Nastaliq Urdu', 'Noto Naskh Arabic', serif;
+  --font-display: 'Amiri', 'Noto Naskh Arabic', serif;
+  --font-headline: 'Amiri', 'Noto Naskh Arabic', serif;
+  --font-script: 'Amiri', 'Noto Naskh Arabic', serif;
   --font-formal: 'Noto Naskh Arabic', 'Noto Sans Arabic', serif;
   --font-ui: 'Noto Sans Arabic', 'Noto Naskh Arabic', system-ui, sans-serif;
   --font-countdown: 'Noto Naskh Arabic', 'Noto Sans Arabic', serif;
 }
 
 html[lang='ps'] body {
-  line-height: 1.95;
+  line-height: 1.9;
   letter-spacing: 0;
   word-spacing: 0.01em;
   text-rendering: optimizeLegibility;
-  font-size: 17px;
+  font-size: 18.5px;
 }
 
 html[lang='ps'] .font-headline,
 html[lang='ps'] .font-script,
 html[lang='ps'] .font-display {
-  line-height: 2.05;
+  line-height: 1.55;
   letter-spacing: 0 !important;
   font-feature-settings: 'kern' 1;
 }
@@ -77,7 +77,52 @@ html[lang='ps'] .font-ui,
 html[lang='ps'] .font-countdown {
   letter-spacing: 0 !important;
   text-transform: none !important;
-  line-height: 1.85;
+  line-height: 1.75;
+  font-size: 1.05em;
+}
+
+/* Hero Pashto: tighter control than global Nastaliq defaults */
+html[lang='ps'] .hero-ps {
+  line-height: 1.35;
+}
+
+html[lang='ps'] .hero-ps-name {
+  font-family: 'Amiri', 'Noto Naskh Arabic', serif;
+  font-weight: 700;
+  line-height: 1.25 !important;
+}
+
+html[lang='ps'] .hero-ps-label {
+  font-family: 'Noto Naskh Arabic', 'Noto Sans Arabic', serif;
+  font-weight: 500;
+  line-height: 1.35 !important;
+}
+
+html[lang='ps'] .hero-ps-date {
+  font-family: 'Amiri', 'Noto Naskh Arabic', serif;
+  font-weight: 700;
+  line-height: 1.4 !important;
+}
+
+/* Schedule: readable + a touch of fancy */
+html[lang='ps'] .schedule-heading {
+  font-family: 'Amiri', 'Noto Naskh Arabic', serif !important;
+  font-weight: 700;
+}
+
+html[lang='ps'] .schedule-time {
+  font-family: 'Noto Naskh Arabic', 'Noto Sans Arabic', serif !important;
+  font-weight: 600;
+}
+
+html[lang='ps'] .schedule-title {
+  font-family: 'Amiri', 'Noto Naskh Arabic', serif !important;
+  font-weight: 700;
+}
+
+html[lang='ps'] .schedule-desc {
+  font-family: 'Noto Naskh Arabic', 'Noto Sans Arabic', serif !important;
+  font-weight: 500;
 }
 
 /* Countdown digits: same Pinyon Script as English (ignore Pashto headline override) */
@@ -91,35 +136,35 @@ html[lang='ps'] .countdown-num {
 html[lang='ps'] h1,
 html[lang='ps'] h2,
 html[lang='ps'] h3 {
-  line-height: 2.1;
+  line-height: 1.85;
 }
 
-/* Section titles sized for Latin scripts — scale for Nastaliq/Naskh */
+/* Section titles / body — larger for Pashto readability */
 html[lang='ps'] .invite-title {
-  font-size: 2.15rem !important;
-  line-height: 2.2 !important;
-  padding-block: 0.2em;
-}
-
-html[lang='ps'] .invite-title-sm {
-  font-size: 1.9rem !important;
-  line-height: 2.15 !important;
+  font-size: 2.45rem !important;
+  line-height: 1.85 !important;
   padding-block: 0.15em;
 }
 
+html[lang='ps'] .invite-title-sm {
+  font-size: 2.15rem !important;
+  line-height: 1.85 !important;
+  padding-block: 0.12em;
+}
+
 html[lang='ps'] .invite-subtitle {
-  font-size: 1.45rem !important;
-  line-height: 2 !important;
+  font-size: 1.65rem !important;
+  line-height: 1.75 !important;
 }
 
 html[lang='ps'] .invite-body {
-  font-size: 1.05rem !important;
-  line-height: 2.05 !important;
+  font-size: 1.2rem !important;
+  line-height: 1.85 !important;
 }
 
 html[lang='ps'] .invite-caption {
-  font-size: 0.9375rem !important;
-  line-height: 1.95 !important;
+  font-size: 1.08rem !important;
+  line-height: 1.8 !important;
 }
 
 html[lang='ps'] .uppercase,
@@ -159,6 +204,56 @@ html[lang='ps'] .invite-section {
 }
 .font-countdown {
   font-family: var(--font-countdown);
+}
+
+/* Hosts list cards — soft wine rim on glass */
+.hosts-card {
+  border-color: rgba(131, 24, 67, 0.16);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.55),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.06),
+    0 12px 30px rgba(80, 40, 60, 0.1);
+}
+
+/* Frosted / glossy glass boxes — matches countdown cells */
+.invite-glass {
+  position: relative;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.55),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.06),
+    0 10px 28px rgba(80, 40, 60, 0.08);
+}
+
+.invite-glass::before {
+  content: '';
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    165deg,
+    rgba(255, 255, 255, 0.42) 0%,
+    rgba(255, 255, 255, 0.12) 28%,
+    rgba(255, 255, 255, 0) 52%
+  );
+  z-index: 0;
+}
+
+.invite-glass > *:not(.absolute):not([class*='absolute']) {
+  position: relative;
+  z-index: 1;
+}
+
+/* Bismillah — Nastaliq in both English and Pashto */
+.font-urdu {
+  font-family: 'Noto Nastaliq Urdu', 'Noto Naskh Arabic', serif;
+  letter-spacing: 0;
+  font-feature-settings: 'kern' 1;
+  text-rendering: optimizeLegibility;
 }
 
 /* Demo shell: full-bleed on phone/tablet, phone column only at lg+ */

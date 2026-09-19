@@ -13,7 +13,7 @@ import type { InviteCopy, Lang } from './types'
 
 const STORAGE_KEY = 'wedding-invite-lang'
 const PS_FONTS_HREF =
-  'https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;500;600;700&family=Noto+Nastaliq+Urdu:wght@400;500;600;700&family=Noto+Sans+Arabic:wght@300;400;500;600;700&display=swap'
+  'https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Noto+Naskh+Arabic:wght@400;500;600;700&family=Noto+Nastaliq+Urdu:wght@400;500;600;700&family=Noto+Sans+Arabic:wght@300;400;500;600;700&display=swap'
 
 const catalogs: Record<Lang, InviteCopy> = { en, ps }
 

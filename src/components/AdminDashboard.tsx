@@ -6,13 +6,11 @@ export type RsvpRow = {
   name: string
   phone: string
   attending: string
-  maleGuests: number
-  femaleGuests: number
-  guests: number
+  lang?: string
 }
 
 type AttendFilter = 'all' | 'yes' | 'no'
-type SortKey = 'timestamp' | 'name' | 'phone' | 'attending' | 'maleGuests' | 'femaleGuests' | 'guests'
+type SortKey = 'timestamp' | 'name' | 'phone' | 'attending' | 'lang'
 
 function formatWhen(iso: string) {
   if (!iso) return '—'
@@ -25,27 +23,11 @@ function formatWhen(iso: string) {
 }
 
 function downloadCsv(rows: RsvpRow[]) {
-  const header = [
-    'Timestamp',
-    'Name',
-    'Phone',
-    'Attending',
-    'Male Guests',
-    'Female Guests',
-    'Total Guests',
-  ]
+  const header = ['Timestamp', 'Name', 'Phone', 'Attending', 'Language']
   const lines = [
     header.join(','),
     ...rows.map((r) =>
-      [
-        r.timestamp,
-        r.name,
-        r.phone,
-        r.attending,
-        String(r.maleGuests),
-        String(r.femaleGuests),
-        String(r.guests),
-      ]
+      [r.timestamp, r.name, r.phone, r.attending, r.lang || '']
         .map((cell) => `"${String(cell).replaceAll('"', '""')}"`)
         .join(','),
     ),
@@ -89,11 +71,7 @@ export function AdminDashboard() {
         (data.rows || []).map((r) => ({
           ...r,
           phone: r.phone || '',
-          maleGuests: Number(r.maleGuests) || 0,
-          femaleGuests: Number(r.femaleGuests) || 0,
-          guests:
-            Number(r.guests) ||
-            (Number(r.maleGuests) || 0) + (Number(r.femaleGuests) || 0),
+          lang: r.lang || '',
         })),
       )
     } catch (err) {
@@ -123,20 +101,20 @@ export function AdminDashboard() {
       return (
         r.name.toLowerCase().includes(q) ||
         r.phone.toLowerCase().includes(q) ||
-        r.attending.toLowerCase().includes(q)
+        r.attending.toLowerCase().includes(q) ||
+        (r.lang || '').toLowerCase().includes(q)
       )
     })
 
     list = [...list].sort((a, b) => {
       let cmp = 0
-      if (sortKey === 'name' || sortKey === 'attending' || sortKey === 'phone') {
-        cmp = String(a[sortKey]).localeCompare(String(b[sortKey]))
-      } else if (
-        sortKey === 'guests' ||
-        sortKey === 'maleGuests' ||
-        sortKey === 'femaleGuests'
+      if (
+        sortKey === 'name' ||
+        sortKey === 'attending' ||
+        sortKey === 'phone' ||
+        sortKey === 'lang'
       ) {
-        cmp = a[sortKey] - b[sortKey]
+        cmp = String(a[sortKey] || '').localeCompare(String(b[sortKey] || ''))
       } else {
         cmp = new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
       }
@@ -148,15 +126,10 @@ export function AdminDashboard() {
   const stats = useMemo(() => {
     const yes = rows.filter((r) => r.attending === 'yes')
     const no = rows.filter((r) => r.attending === 'no')
-    const male = yes.reduce((sum, r) => sum + r.maleGuests, 0)
-    const female = yes.reduce((sum, r) => sum + r.femaleGuests, 0)
     return {
       responses: rows.length,
       yes: yes.length,
       no: no.length,
-      male,
-      female,
-      guests: male + female,
     }
   }, [rows])
 
@@ -208,14 +181,11 @@ export function AdminDashboard() {
       </header>
 
       <main className="mx-auto max-w-6xl px-4 py-6 sm:px-6">
-        <section className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+        <section className="grid grid-cols-3 gap-3">
           {[
             { label: 'Responses', value: stats.responses },
             { label: 'Attending', value: stats.yes },
             { label: 'Declined', value: stats.no },
-            { label: 'Male', value: stats.male },
-            { label: 'Female', value: stats.female },
-            { label: 'Total guests', value: stats.guests },
           ].map((s) => (
             <div
               key={s.label}
@@ -286,7 +256,7 @@ export function AdminDashboard() {
           ) : (
             <>
               <div className="overflow-x-auto">
-                <table className="w-full min-w-[760px] text-left">
+                <table className="w-full min-w-[640px] text-left">
                   <thead className="border-b border-black/8 bg-[#f7f1e8]">
                     <tr className="font-ui text-[11px] tracking-[0.12em] text-muted uppercase">
                       {(
@@ -295,9 +265,7 @@ export function AdminDashboard() {
                           ['name', 'Name'],
                           ['phone', 'Phone'],
                           ['attending', 'Status'],
-                          ['maleGuests', 'Male'],
-                          ['femaleGuests', 'Female'],
-                          ['guests', 'Total'],
+                          ['lang', 'Lang'],
                         ] as const
                       ).map(([key, label]) => (
                         <th key={key} className="px-4 py-3 font-medium">
@@ -352,13 +320,9 @@ export function AdminDashboard() {
                                 : r.attending || '—'}
                           </span>
                         </td>
-                        <td className="font-display px-4 py-3 text-lg tabular-nums">
-                          {r.maleGuests}
+                        <td className="font-ui px-4 py-3 text-sm uppercase text-ink/70">
+                          {r.lang || '—'}
                         </td>
-                        <td className="font-display px-4 py-3 text-lg tabular-nums">
-                          {r.femaleGuests}
-                        </td>
-                        <td className="font-display px-4 py-3 text-lg tabular-nums">{r.guests}</td>
                       </tr>
                     ))}
                   </tbody>

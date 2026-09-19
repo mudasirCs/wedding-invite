@@ -19,7 +19,7 @@ export function TopChrome({ musicOn, onToggle, showMusic = true }: Props) {
           aria-label={lang === 'en' ? 'Switch to Pashto' : 'Switch to English'}
         >
           <GlobeIcon />
-          <span className="text-xs tracking-wide" dir="auto">
+          <span className={`tracking-wide ${lang === 'ps' ? 'text-sm' : 'text-xs'}`} dir="auto">
             {lang === 'en' ? 'پښتو' : 'EN'}
           </span>
         </button>
@@ -31,7 +31,7 @@ export function TopChrome({ musicOn, onToggle, showMusic = true }: Props) {
           onClick={onToggle}
           aria-label={musicOn ? t.muteMusic : t.playMusic}
           aria-pressed={musicOn}
-          className="fixed end-[max(1rem,env(safe-area-inset-right))] bottom-[max(1.25rem,env(safe-area-inset-bottom))] z-[60] flex h-12 w-12 items-center justify-center rounded-full bg-[#3a3a3a] text-white shadow-lg lg:end-[calc(50%-195px+1rem)]"
+          className="fixed end-[max(1rem,env(safe-area-inset-right))] bottom-[max(4.75rem,calc(env(safe-area-inset-bottom)+3.75rem))] z-[60] flex h-12 w-12 items-center justify-center rounded-full bg-[#3a3a3a] text-white shadow-lg lg:end-[calc(50%-195px+1rem)]"
         >
           {musicOn ? <SpeakerIcon /> : <SpeakerOffIcon />}
         </button>

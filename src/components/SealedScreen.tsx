@@ -93,12 +93,12 @@ export function SealedScreen({ videoSrc, poster, playing, onTap, onPlayEnd }: Pr
                   style={{
                     fontSize: isRtl
                       ? isName
-                        ? 30
-                        : 22
+                        ? 34
+                        : 24
                       : isName
                         ? 36
                         : 26,
-                    lineHeight: isRtl ? 1.7 : 1.1,
+                    lineHeight: isRtl ? 1.55 : 1.1,
                     color: '#6b1f2a',
                     textShadow:
                       '0 1px 0 rgba(255,255,255,0.45), 0.3px 0 currentColor, -0.3px 0 currentColor',
@@ -115,13 +115,42 @@ export function SealedScreen({ videoSrc, poster, playing, onTap, onPlayEnd }: Pr
               )
             })}
           </div>
+
+          {/* Elegant label centered on the satin ribbon bow */}
+          <div
+            className="absolute inset-x-0 flex items-center justify-center"
+            style={{
+              top: isRtl ? '54%' : '54.5%',
+              transform: 'translateY(-50%)',
+              paddingInline: '2.25rem',
+            }}
+          >
+            <p
+              className={`${isRtl ? 'font-formal' : 'font-script'} m-0 max-w-[15rem] text-center`}
+              style={{
+                fontSize: isRtl ? 22 : 28,
+                lineHeight: isRtl ? 1.55 : 1.05,
+                letterSpacing: isRtl ? 0 : '0.04em',
+                color: '#5c1822',
+                fontWeight: isRtl ? 500 : 450,
+                textShadow:
+                  '0 1px 0 rgba(255,255,255,0.55), 0 0 12px rgba(255,245,250,0.35)',
+                WebkitTextStroke: isRtl ? '0.15px #5c1822' : '0.2px #5c1822',
+                fontFeatureSettings: 'normal',
+                fontVariationSettings: 'normal',
+              }}
+            >
+              {t.ribbonLabel}
+            </p>
+          </div>
+
           <p
             className="absolute inset-x-0 text-center font-script"
             style={{
               bottom: '4.5%',
-              fontSize: isRtl ? 16 : 16,
+              fontSize: isRtl ? 18 : 16,
               color: '#6b1f2a',
-              lineHeight: isRtl ? 1.85 : 1.25,
+              lineHeight: isRtl ? 1.7 : 1.25,
             }}
           >
             {t.tapToOpen}

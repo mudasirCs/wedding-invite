@@ -8,11 +8,11 @@
  *
  * After editing this file, deploy a NEW version (Manage deployments → Edit → New version).
  *
- * Columns: Timestamp | Name | Phone | Attending | Male Guests | Female Guests
+ * Columns: Timestamp | Name | Phone | Attending | Language
  */
 
 var SHEET_NAME = 'RSVPs'
-var HEADERS = ['Timestamp', 'Name', 'Phone', 'Attending', 'Male Guests', 'Female Guests']
+var HEADERS = ['Timestamp', 'Name', 'Phone', 'Attending', 'Language']
 
 function doGet(e) {
   try {
@@ -36,8 +36,7 @@ function doPost(e) {
     var name = String(data.name || '').trim()
     var phone = String(data.phone || '').trim()
     var attending = String(data.attending || '').trim()
-    var maleGuests = Math.max(0, Number(data.maleGuests) || 0)
-    var femaleGuests = Math.max(0, Number(data.femaleGuests) || 0)
+    var lang = String(data.lang || '').trim()
 
     if (!name) {
       return json_({ ok: false, error: 'Name is required' })
@@ -45,11 +44,11 @@ function doPost(e) {
     if (!phone) {
       return json_({ ok: false, error: 'Phone is required' })
     }
-    if (attending === 'yes' && maleGuests + femaleGuests < 1) {
-      return json_({ ok: false, error: 'Add at least one guest' })
+    if (attending !== 'yes' && attending !== 'no') {
+      return json_({ ok: false, error: 'Please choose yes or no' })
     }
 
-    sheet.appendRow([new Date(), name, phone, attending, maleGuests, femaleGuests])
+    sheet.appendRow([new Date(), name, phone, attending, lang])
     return json_({ ok: true })
   } catch (err) {
     return json_({ ok: false, error: String(err) })
@@ -69,7 +68,7 @@ function ensureSheet_() {
   var width = Math.max(sheet.getLastColumn(), HEADERS.length)
   var first = sheet.getRange(1, 1, 1, width).getValues()[0]
   var h4 = String(first[4] || '').toLowerCase()
-  if (!String(first[0] || '').trim() || h4.indexOf('male') === -1) {
+  if (!String(first[0] || '').trim() || h4.indexOf('lang') === -1) {
     // Update header row only — delete old test rows in the Sheet if column meanings changed
     sheet.getRange(1, 1, 1, HEADERS.length).setValues([HEADERS])
     sheet.setFrozenRows(1)
@@ -88,17 +87,13 @@ function listRows_() {
     var name = String(row[1] || '').trim()
     if (!name) continue
     var ts = row[0]
-    var male = Number(row[4]) || 0
-    var female = Number(row[5]) || 0
     rows.push({
       id: i,
       timestamp: ts instanceof Date ? ts.toISOString() : String(ts || ''),
       name: name,
       phone: String(row[2] || '').trim(),
       attending: String(row[3] || '').trim().toLowerCase(),
-      maleGuests: male,
-      femaleGuests: female,
-      guests: male + female,
+      lang: String(row[4] || '').trim(),
     })
   }
   return rows

@@ -4,11 +4,22 @@ export type InviteCopy = {
   envelopeMessage: string
   /** Four centered lines above the sealed ribbon */
   envelopeLines: [string, string, string, string]
+  /** Label on the sealed ribbon */
+  ribbonLabel: string
   partnerOne: string
   partnerTwo: string
   and: string
-  subtitle: string
+  sonOf: string
+  daughterOf: string
+  fatherOne: string
+  fatherTwo: string
   dateLabel: string
+  hostsAwaitingHeading: string
+  hostsAwaitingNames: string[]
+  hostsMiddleNames: string[]
+  hostsComplimentsHeading: string
+  hostsComplimentsNames: string[]
+  hostsComplimentsPhone: string
   countdownTitle: string
   countdownMessage: string
   countdownDone: string
@@ -20,32 +31,20 @@ export type InviteCopy = {
   scrollToRsvp: string
   venueTitle: string
   venueName: string
+  venueBallroom: string
   venueAddress: string
   getDirections: string
   openInMaps: string
   scheduleHeading: string
   schedule: { time: string; title: string; description: string }[]
-  dressCode: string
-  dressDetail: string
-  suggestedColors: string
-  colorLabels: string[]
-  giftsTitle: string
-  giftsMessage: string
-  registryName: string
-  bankLabel: string
-  bankName: string
-  menuTitle: string
-  menu: { title: string; items: { name: string; description: string }[] }[]
-  textBlockTitle: string
-  textBlockBody: string
-  galleryTitle: string
-  gallerySubtitle: string
-  faqTitle: string
-  faq: { question: string; answer: string }[]
-  accommodationHeading: string
-  accommodationSubheading: string
-  viewDetails: string
-  hotels: { name: string; description: string; priceRange: string }[]
+  prohibitedTitle: string
+  prohibitedNoPhotosTitle: string
+  prohibitedNoPhotosBody: string
+  prohibitedPrivacy: string
+  prohibitedNoChildren: string
+  contactsHeading: string
+  contactsSubheading: string
+  contacts: { name: string; phone: string; tel: string }[]
   rsvpHeading: string
   rsvpSubheading: string
   rsvpReplyBy: string
@@ -57,10 +56,6 @@ export type InviteCopy = {
   willAttend: string
   attendYes: string
   attendNo: string
-  guestsHeading: string
-  male: string
-  female: string
-  total: string
   sendRsvp: string
   sending: string
   rsvpNotConnected: string
@@ -70,4 +65,11 @@ export type InviteCopy = {
   langLabel: string
   muteMusic: string
   playMusic: string
+  navAria: string
+  navHome: string
+  navHosts: string
+  navVenue: string
+  navSchedule: string
+  navContacts: string
+  navRsvp: string
 }
