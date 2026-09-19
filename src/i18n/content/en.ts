@@ -20,7 +20,7 @@ export const en: InviteCopy = {
   hours: 'Hours',
   minutes: 'Minutes',
   seconds: 'Seconds',
-  tapToOpen: 'Tap to open',
+  tapToOpen: 'Tap anywhere to open',
   scrollToRsvp: 'Scroll to RSVP',
   venueTitle: 'The Venue',
   venueName: "Royal Albert's Palace",

@@ -74,6 +74,8 @@ export default function App() {
               key="sealed"
               videoSrc={invite.media.openingVideo}
               poster={invite.media.sealedPoster}
+              handGroom={invite.media.handGroom}
+              handBride={invite.media.handBride}
               playing={phase === 'playing'}
               onTap={() => setPhase('playing')}
               onPlayEnd={onPlayEnd}

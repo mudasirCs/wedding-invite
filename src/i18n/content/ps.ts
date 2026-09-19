@@ -21,7 +21,7 @@ export const ps: InviteCopy = {
   hours: 'ساعتونه',
   minutes: 'دقیقې',
   seconds: 'ثانیې',
-  tapToOpen: 'د خلاصولو لپاره ووهئ',
+  tapToOpen: 'هر ځای ووهئ ترڅو خلاص شي',
   scrollToRsvp: 'لاندې RSVP ته لاړ شئ',
   venueTitle: 'ځای',
   venueName: 'رویل البرټس پیلس',

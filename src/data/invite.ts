@@ -16,6 +16,8 @@ export type InviteConfig = {
     themePoster: string
     music: string
     bismillah: string
+    handGroom: string
+    handBride: string
   }
   venue: {
     title: string
@@ -53,6 +55,8 @@ export const invite: InviteConfig = {
     themePoster: '/media/theme-poster.jpg',
     music: '/audio/background.mp3?v=6',
     bismillah: '/media/bismillah.webp?v=4',
+    handGroom: '/media/hand-groom.webp?v=1',
+    handBride: '/media/hand-bride.webp?v=1',
   },
   venue: {
     title: 'The Venue',
