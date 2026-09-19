@@ -51,7 +51,7 @@ export const invite: InviteConfig = {
     heroImage: '/media/hero-balcony.jpg?v=3',
     themeVideo: '/media/theme.mp4',
     themePoster: '/media/theme-poster.jpg',
-    music: '/audio/background.mp3?v=4',
+    music: '/audio/background.mp3?v=5',
     bismillah: '/media/bismillah.webp?v=4',
   },
   venue: {
