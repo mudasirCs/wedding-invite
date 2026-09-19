@@ -6,6 +6,8 @@ export type InviteCopy = {
   envelopeLines: [string, string, string, string]
   /** Label on the sealed ribbon */
   ribbonLabel: string
+  /** Short invitation line under Bismillah */
+  inviteIntro: string
   partnerOne: string
   partnerTwo: string
   and: string

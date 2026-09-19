@@ -241,12 +241,28 @@ export function InvitePage({ invite }: Props) {
               alt=""
               className={`mx-auto h-auto object-contain ${
                 isRtl
-                  ? 'mb-3 w-[min(100%,18rem)]'
+                  ? 'mb-2 w-[min(100%,18rem)]'
                   : 'mb-1 w-[min(100%,20rem)] sm:w-[min(100%,21rem)]'
               }`}
               decoding="async"
               fetchPriority="high"
             />
+
+            <p
+              className={`m-0 text-center ${isRtl ? 'hero-ps-label' : 'font-formal'}`}
+              style={{
+                marginBottom: isRtl ? 10 : 10,
+                maxWidth: isRtl ? '19rem' : '20rem',
+                fontSize: isRtl ? 15 : 15,
+                lineHeight: isRtl ? 1.45 : 1.4,
+                color: '#6b1f2a',
+                fontWeight: isRtl ? 500 : 400,
+                fontStyle: isRtl ? 'normal' : 'italic',
+                textShadow: heroReadableShadow,
+              }}
+            >
+              {t.inviteIntro}
+            </p>
 
             <div className="flex w-full flex-col items-center">
               <h1
