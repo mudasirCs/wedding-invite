@@ -187,7 +187,7 @@ export function InvitePage({ invite }: Props) {
         <section
           id="hero"
           className={`relative flex h-[100dvh] min-h-[100svh] flex-col items-center justify-start overflow-hidden px-5 text-center sm:px-8 ${
-            isRtl ? 'pt-[10vh] sm:pt-[11vh]' : 'pt-[12vh] sm:pt-[13vh]'
+            isRtl ? 'pt-[7vh] sm:pt-[8vh]' : 'pt-[8vh] sm:pt-[9vh]'
           }`}
           style={{ background: '#d9cfe0' }}
         >
@@ -232,7 +232,7 @@ export function InvitePage({ invite }: Props) {
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.05, delay: 0.15 }}
-            className={`relative z-10 mt-2 flex w-full flex-col items-center sm:mt-3 ${
+            className={`relative z-10 mt-0 flex w-full flex-col items-center sm:mt-1 ${
               isRtl ? 'hero-ps max-w-[21rem]' : 'max-w-[22rem]'
             }`}
           >
