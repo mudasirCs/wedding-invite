@@ -48,7 +48,13 @@ function doPost(e) {
       return json_({ ok: false, error: 'Please choose yes or no' })
     }
 
-    sheet.appendRow([new Date(), name, phone, attending, lang])
+    // Force phone as plain text so "+1 ..." is not parsed as a formula (#ERROR!)
+    var phoneCell = phone
+    if (/^[+=@-]/.test(phoneCell)) {
+      phoneCell = "'" + phoneCell
+    }
+
+    sheet.appendRow([new Date(), name, phoneCell, attending, lang])
     return json_({ ok: true })
   } catch (err) {
     return json_({ ok: false, error: String(err) })

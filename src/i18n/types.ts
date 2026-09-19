@@ -14,12 +14,6 @@ export type InviteCopy = {
   fatherOne: string
   fatherTwo: string
   dateLabel: string
-  hostsAwaitingHeading: string
-  hostsAwaitingNames: string[]
-  hostsMiddleNames: string[]
-  hostsComplimentsHeading: string
-  hostsComplimentsNames: string[]
-  hostsComplimentsPhone: string
   countdownTitle: string
   countdownMessage: string
   countdownDone: string
@@ -67,7 +61,6 @@ export type InviteCopy = {
   playMusic: string
   navAria: string
   navHome: string
-  navHosts: string
   navVenue: string
   navSchedule: string
   navContacts: string

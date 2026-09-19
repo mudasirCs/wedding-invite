@@ -4,7 +4,7 @@ import { useLanguage } from '../i18n/LanguageContext'
 type NavItem = {
   id: string
   label: string
-  icon: 'home' | 'hosts' | 'venue' | 'schedule' | 'contacts' | 'rsvp'
+  icon: 'home' | 'venue' | 'schedule' | 'contacts' | 'rsvp'
 }
 
 export function FloatingNav() {
@@ -13,7 +13,6 @@ export function FloatingNav() {
 
   const items: NavItem[] = [
     { id: 'hero', label: t.navHome, icon: 'home' },
-    { id: 'hosts', label: t.navHosts, icon: 'hosts' },
     { id: 'venue', label: t.navVenue, icon: 'venue' },
     { id: 'schedule', label: t.navSchedule, icon: 'schedule' },
     { id: 'contacts', label: t.navContacts, icon: 'contacts' },
@@ -116,15 +115,6 @@ function NavIcon({
         <svg {...common}>
           <path d="M3 10.5 12 3l9 7.5" />
           <path d="M5.5 9.5V21h13V9.5" />
-        </svg>
-      )
-    case 'hosts':
-      return (
-        <svg {...common}>
-          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-          <circle cx="9" cy="7" r="3.2" />
-          <path d="M22 21v-2a3.5 3.5 0 0 0-2.5-3.35" />
-          <path d="M16.5 3.7a3.2 3.2 0 0 1 0 6.4" />
         </svg>
       )
     case 'venue':

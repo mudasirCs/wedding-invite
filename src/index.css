@@ -206,15 +206,6 @@ html[lang='ps'] .invite-section {
   font-family: var(--font-countdown);
 }
 
-/* Hosts list cards — soft wine rim on glass */
-.hosts-card {
-  border-color: rgba(131, 24, 67, 0.16);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.55),
-    inset 0 -1px 0 rgba(255, 255, 255, 0.06),
-    0 12px 30px rgba(80, 40, 60, 0.1);
-}
-
 /* Frosted / glossy glass boxes — matches countdown cells */
 .invite-glass {
   position: relative;
