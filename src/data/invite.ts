@@ -86,7 +86,7 @@ export const invite: InviteConfig = {
         time: '8:00 PM',
         title: 'CEREMONY',
         description: 'Ceremony starts',
-        icon: '/media/timeline-ceremony.webp?v=2',
+        icon: '/media/timeline-ceremony.webp?v=3',
       },
       {
         time: '8:30 PM',
